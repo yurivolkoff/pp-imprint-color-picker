@@ -66,11 +66,11 @@
   .modal-head { grid-area: head; padding: var(--s-4) var(--s-6); display: flex; align-items: center; border-bottom: 1px solid var(--border-soft); }
   .modal-head h4 { flex: 1; font-size: 18px; font-weight: 700; text-align: center; }
   .modal-head .close { background: none; border: 0; font-size: 22px; line-height: 1; color: var(--text-muted); padding: 4px 8px; }
-  .modal-body { grid-area: body; padding: var(--s-5) var(--s-6); display: flex; flex-direction: column; gap: var(--s-4); overflow-y: auto; max-height: 640px; }
+  .modal-body { grid-area: body; padding: var(--s-5) var(--s-6); display: flex; flex-direction: column; gap: var(--s-4); overflow-y: auto; max-height: 720px; }
   .modal-summary { grid-area: summary; padding: var(--s-6); background: var(--bg-tertiary); border-left: 1px solid var(--border-soft); display: flex; flex-direction: column; gap: var(--s-4); }
   .modal-foot { grid-area: foot; padding: var(--s-4) var(--s-6); display: flex; justify-content: flex-end; gap: var(--s-3); border-top: 1px solid var(--border-soft); background: var(--bg-tertiary); }
 
-  /* === Context bar (read-only — set upstream in the configurator) === */
+  /* === Context bar === */
   .context-bar { display: flex; align-items: center; gap: var(--s-4); padding: var(--s-3) var(--s-4); background: #FAFAFA; border: 1px solid var(--border-soft); border-radius: var(--r-8); font-size: 13px; }
   .context-item { display: flex; flex-direction: column; gap: 2px; }
   .context-item .lbl { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -89,15 +89,14 @@
   .picker-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
   .picker-help { font-size: 12px; color: var(--text-muted); margin-bottom: var(--s-3); }
 
-  /* Warning banner — appears when colors exceed preferred count */
+  /* Warning banner */
   .preferred-warning { display: flex; align-items: flex-start; gap: var(--s-2); padding: 10px 12px; background: var(--warning-bg); border: 1px solid var(--warning-border); border-radius: var(--r-6); margin-bottom: var(--s-3); font-size: 13px; color: var(--warning-text); }
   .preferred-warning .icon { flex-shrink: 0; font-weight: 700; font-size: 14px; line-height: 1.2; }
   .preferred-warning b { color: #6f4500; }
-  .preferred-warning[hidden] { display: none; }
 
-  /* Chip-and-add row — this IS the picker */
+  /* Chip zone */
   .chip-zone { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-8); background: var(--white); min-height: 60px; align-items: center; }
-  .chip-zone.dragging { border-color: var(--orange-primary); }
+  .chip-zone.picker-attached { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: transparent; }
 
   .color-chip { display: inline-flex; align-items: center; gap: var(--s-2); padding: 5px 5px 5px 6px; background: var(--white); border: 1px solid var(--border-soft); border-radius: 999px; font-size: 14px; color: var(--text-dark); cursor: pointer; transition: border-color 0.15s ease, box-shadow 0.15s ease; }
   .color-chip:hover { border-color: var(--navy-primary); box-shadow: 0 2px 6px rgba(0,21,66,0.08); }
@@ -114,14 +113,71 @@
   .add-color-btn:hover { border-style: solid; border-color: var(--orange-primary); color: var(--orange-primary); background: rgba(254,80,0,0.04); }
   .add-color-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .add-color-btn .plus { font-size: 16px; line-height: 1; }
+  .add-color-btn.is-active { background: var(--navy-primary); color: var(--white); border-color: var(--navy-primary); border-style: solid; }
+  .add-color-btn.is-active:hover { background: var(--navy-hover); color: var(--white); }
 
   .chip-zone-empty { color: var(--text-light); font-size: 13px; font-style: italic; padding: 4px var(--s-2); }
 
-  /* Counter line below chips */
+  /* Counter line */
   .chip-counter { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-top: var(--s-2); }
   .chip-counter b { color: var(--text-dark); font-weight: 700; }
   .chip-counter .right { display: flex; align-items: center; gap: var(--s-2); }
   .chip-counter .pms-sum { color: var(--orange-dark); font-weight: 700; }
+
+  /* === Inline picker (replaces the popover) === */
+  .inline-picker { border: 1px solid var(--border-soft); border-top: 0; border-radius: 0 0 var(--r-8) var(--r-8); background: var(--white); display: flex; flex-direction: column; max-height: 520px; overflow: hidden; box-shadow: 0 6px 16px -8px rgba(0,21,66,0.08); }
+
+  .picker-head-bar { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2) var(--s-3); background: #FAFAFA; border-bottom: 1px solid var(--border-soft); font-size: 13px; }
+  .picker-mode-label { color: var(--text-dark); font-weight: 700; }
+  .picker-mode-label .target { color: var(--navy-primary); }
+  .picker-mode-label .target .sw-mini { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.15); vertical-align: -1px; margin-right: 4px; }
+  .picker-done { margin-left: auto; background: var(--navy-primary); color: var(--white); border: 0; padding: 6px 14px; border-radius: var(--r-6); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+  .picker-done:hover { background: var(--navy-hover); }
+
+  /* Tier tabs */
+  .tier-tabs { display: flex; padding: var(--s-2) var(--s-3) 0; gap: 2px; background: var(--white); border-bottom: 1px solid var(--border-soft); }
+  .tier-tabs button { background: none; border: 0; padding: 9px var(--s-4); font-size: 14px; font-weight: 700; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s ease, border-color 0.15s ease; }
+  .tier-tabs button.active { color: var(--navy-primary); border-bottom-color: var(--orange-primary); }
+  .tier-tabs button:disabled { color: var(--text-light); cursor: not-allowed; }
+  .tier-tabs button .badge { font-size: 10px; color: var(--orange-dark); margin-left: 4px; font-weight: 700; }
+
+  .picker-search-wrap { padding: var(--s-3); display: flex; flex-direction: column; gap: var(--s-2); background: var(--white); border-bottom: 1px solid var(--border-soft); }
+  .pop-search { width: 100%; padding: 9px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-6); font-size: 14px; }
+  .pop-search:focus { outline: none; border-color: var(--orange-primary); box-shadow: 0 0 0 3px rgba(254,80,0,0.15); }
+
+  .picker-body { flex: 1; overflow-y: auto; padding: var(--s-3) var(--s-3) var(--s-4); }
+  .picker-foot { padding: var(--s-2) var(--s-3); border-top: 1px solid var(--border-soft); font-size: 12px; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between; background: #FAFAFA; gap: var(--s-3); }
+
+  /* Standard swatch grid */
+  .family { margin-bottom: var(--s-4); }
+  .family:last-child { margin-bottom: 0; }
+  .family h6 { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 var(--s-2) 2px; }
+  .swatch-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
+  .sw-btn { width: 100%; aspect-ratio: 1; border-radius: var(--r-6); border: 1px solid rgba(0,0,0,0.12); cursor: pointer; position: relative; transition: transform 0.1s ease, box-shadow 0.15s ease; }
+  .sw-btn:hover { transform: scale(1.08); box-shadow: 0 2px 6px rgba(0,0,0,0.15); z-index: 2; }
+  .sw-btn.selected { box-shadow: 0 0 0 2px var(--orange-primary), 0 2px 6px rgba(0,0,0,0.15); }
+  .sw-btn .tip { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--text-dark); color: white; padding: 4px 8px; border-radius: var(--r-4); font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; z-index: 3; }
+  .sw-btn:hover .tip { opacity: 1; }
+  .sw-btn .tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 4px solid transparent; border-top-color: var(--text-dark); }
+
+  /* PMS rows */
+  .pms-disclaimer { background: var(--highlight-bg); border: 1px solid #E8D9A1; color: #7a5a00; font-size: 12px; padding: 8px 10px; border-radius: var(--r-6); }
+  .pms-disclaimer b { font-weight: 700; }
+  .pms-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pms-chip { font-size: 11px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border-soft); background: var(--white); color: var(--text-muted); cursor: pointer; font-weight: 700; }
+  .pms-chip.active { background: var(--navy-primary); color: var(--white); border-color: var(--navy-primary); }
+  .pms-list { display: flex; flex-direction: column; gap: 2px; }
+  .pms-row { display: grid; grid-template-columns: 28px 110px 1fr 64px; gap: 10px; align-items: center; padding: 6px 8px; border-radius: var(--r-6); background: none; border: 0; text-align: left; cursor: pointer; transition: background 0.1s; }
+  .pms-row:hover { background: var(--bg-tertiary); }
+  .pms-row.selected { background: rgba(254,80,0,0.08); }
+  .pms-row .sw { width: 24px; height: 24px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.15); }
+  .pms-row .code { font-weight: 700; color: var(--text-dark); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .pms-row .name { color: var(--text-muted); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pms-row .hex { font-family: 'Courier New', monospace; font-size: 11px; color: var(--text-light); text-align: right; }
+
+  .no-match { text-align: center; padding: var(--s-6) var(--s-4); color: var(--text-muted); font-size: 13px; }
+  .no-match .switch-link { display: inline-block; margin-top: var(--s-2); color: var(--navy-primary); font-weight: 700; background: none; border: 0; }
+  .pop-foot-link { background: none; border: 0; color: var(--navy-primary); font-weight: 700; padding: 0; font-size: 12px; }
 
   /* === Artwork instructions === */
   .instr-label { display: block; font-size: 12px; font-weight: 700; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
@@ -136,12 +192,10 @@
   .price-total-label { font-size: 12px; color: var(--text-muted); }
   .price-each { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
   .price-delta { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--orange-dark); font-weight: 700; margin-top: 4px; }
-  .price-delta[hidden] { display: none; }
   .breakdown { margin-top: var(--s-3); display: grid; grid-template-columns: 1fr auto; gap: 6px var(--s-3); font-size: 13px; }
   .breakdown .label { color: var(--text-body); }
   .breakdown .amt { color: var(--text-dark); font-variant-numeric: tabular-nums; }
   .breakdown .pms-line { color: var(--orange-dark); font-weight: 700; }
-  .breakdown .extra-line { color: var(--warning-text); font-weight: 700; }
 
   /* === Buttons === */
   .btn-primary { background: var(--orange-primary); color: var(--white); border: 0; padding: 10px 24px; border-radius: var(--r-6); font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -149,63 +203,16 @@
   .btn-ghost { background: none; color: var(--text-muted); border: 0; padding: 10px 16px; font-weight: 500; font-size: 14px; }
   .btn-ghost:hover { color: var(--text-dark); }
 
-  /* === Popovers === */
-  .popover { position: fixed; background: var(--white); border-radius: var(--r-8); box-shadow: var(--shadow-pop); border: 1px solid var(--border-translucent); width: 460px; max-height: 540px; display: flex; flex-direction: column; z-index: 100; }
-  .popover[hidden] { display: none; }
-  .popover .pop-head { padding: 0; border-bottom: 1px solid var(--border-soft); }
-
-  /* Tier tabs at top of popover */
-  .tier-tabs { display: flex; padding: var(--s-2) var(--s-3) 0; gap: 2px; background: #FAFAFA; }
-  .tier-tabs button { background: none; border: 0; padding: 9px var(--s-4); font-size: 14px; font-weight: 700; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s ease, border-color 0.15s ease; }
-  .tier-tabs button.active { color: var(--navy-primary); border-bottom-color: var(--orange-primary); background: var(--white); }
-  .tier-tabs button:disabled { color: var(--text-light); cursor: not-allowed; }
-  .tier-tabs button .badge { font-size: 10px; color: var(--orange-dark); margin-left: 4px; font-weight: 700; }
-
-  .pop-search-wrap { padding: var(--s-3); display: flex; flex-direction: column; gap: var(--s-2); }
-  .pop-search { width: 100%; padding: 9px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-6); font-size: 14px; }
-  .pop-search:focus { outline: none; border-color: var(--orange-primary); box-shadow: 0 0 0 3px rgba(254,80,0,0.15); }
-
-  .popover .pop-body { flex: 1; overflow-y: auto; padding: var(--s-3) var(--s-3) var(--s-4); }
-  .popover .pop-foot { padding: var(--s-3); border-top: 1px solid var(--border-soft); font-size: 12px; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between; background: #FAFAFA; gap: var(--s-3); }
-
-  /* Standard swatch grid */
-  .family { margin-bottom: var(--s-4); }
-  .family:last-child { margin-bottom: 0; }
-  .family h6 { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 var(--s-2) 2px; }
-  .swatch-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
-  .sw-btn { width: 100%; aspect-ratio: 1; border-radius: var(--r-6); border: 1px solid rgba(0,0,0,0.12); cursor: pointer; position: relative; transition: transform 0.1s ease, box-shadow 0.15s ease; }
-  .sw-btn:hover { transform: scale(1.08); box-shadow: 0 2px 6px rgba(0,0,0,0.15); z-index: 2; }
-  .sw-btn.selected { box-shadow: 0 0 0 2px var(--orange-primary), 0 2px 6px rgba(0,0,0,0.15); }
-  .sw-btn .tip { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--text-dark); color: white; padding: 4px 8px; border-radius: var(--r-4); font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; z-index: 3; }
-  .sw-btn:hover .tip { opacity: 1; }
-  .sw-btn .tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 4px solid transparent; border-top-color: var(--text-dark); }
-
-  /* PMS list rows */
-  .pms-disclaimer { background: var(--highlight-bg); border: 1px solid #E8D9A1; color: #7a5a00; font-size: 12px; padding: 8px 10px; border-radius: var(--r-6); }
-  .pms-disclaimer b { font-weight: 700; }
-  .pms-filters { display: flex; gap: 6px; flex-wrap: wrap; }
-  .pms-chip { font-size: 11px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border-soft); background: var(--white); color: var(--text-muted); cursor: pointer; font-weight: 700; }
-  .pms-chip.active { background: var(--navy-primary); color: var(--white); border-color: var(--navy-primary); }
-  .pms-list { display: flex; flex-direction: column; gap: 2px; }
-  .pms-row { display: grid; grid-template-columns: 28px 100px 1fr 64px; gap: 10px; align-items: center; padding: 6px 8px; border-radius: var(--r-6); background: none; border: 0; text-align: left; cursor: pointer; transition: background 0.1s; }
-  .pms-row:hover { background: var(--bg-tertiary); }
-  .pms-row.selected { background: rgba(254,80,0,0.08); }
-  .pms-row .sw { width: 24px; height: 24px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.15); }
-  .pms-row .code { font-weight: 700; color: var(--text-dark); font-size: 13px; font-variant-numeric: tabular-nums; }
-  .pms-row .name { color: var(--text-muted); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .pms-row .hex { font-family: 'Courier New', monospace; font-size: 11px; color: var(--text-light); text-align: right; }
-
-  .no-match { text-align: center; padding: var(--s-6) var(--s-4); color: var(--text-muted); font-size: 13px; }
-  .no-match .switch-link { display: inline-block; margin-top: var(--s-2); color: var(--navy-primary); font-weight: 700; background: none; border: 0; }
-
-  .pop-foot-link { background: none; border: 0; color: var(--navy-primary); font-weight: 700; padding: 0; font-size: 12px; }
-
-  /* Toast */
+  /* === Toast === */
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--navy-primary); color: var(--white); padding: 10px 18px; border-radius: var(--r-6); font-size: 13px; box-shadow: 0 6px 16px rgba(0,0,0,0.2); z-index: 200; opacity: 0; transition: opacity 0.2s ease, transform 0.2s ease; pointer-events: none; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
   .toast.warn { background: var(--orange-dark); }
 
-  /* === Demo controls + annotations === */
+  /* Just-added chip flash */
+  @keyframes chip-pop { 0% { transform: scale(0.7); opacity: 0; } 60% { transform: scale(1.06); opacity: 1; } 100% { transform: scale(1); } }
+  .color-chip.just-added { animation: chip-pop 0.28s ease; }
+
+  /* === Demo controls === */
   .demo-controls { width: 1200px; background: var(--white); border-radius: var(--r-8); padding: var(--s-4); border: 1px solid var(--border-soft); }
   .demo-controls h5 { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: var(--s-3); }
   .demo-controls .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
@@ -225,7 +232,6 @@
 <body>
 <div class="page">
 
-  <!-- Page header -->
   <header class="page-header">
     <span class="crumb">PromotionPros</span>
     <span class="crumb-sep">›</span>
@@ -234,10 +240,10 @@
     <span>Customize Your Product</span>
     <span class="crumb-sep">›</span>
     <span>Sending us artwork</span>
-    <span class="proto-tag">Prototype · Picker v2</span>
+    <span class="proto-tag">Prototype · Picker v3</span>
   </header>
 
-  <!-- Demo control strip (prototype-only) -->
+  <!-- Demo controls -->
   <div class="demo-controls">
     <h5>Demo controls — try these states</h5>
 
@@ -273,7 +279,7 @@
     </div>
   </div>
 
-  <!-- The modal — this is the "Sending us artwork" pop-up. Everything inside is what the user sees. -->
+  <!-- The artwork-upload modal -->
   <div class="modal-stage">
     <div class="modal" role="dialog" aria-modal="true" aria-label="Sending us artwork">
 
@@ -282,10 +288,9 @@
         <button class="close" aria-label="Close">×</button>
       </div>
 
-      <!-- Modal body — single column for picker; right column for price -->
       <div class="modal-body">
 
-        <!-- Context bar — read-only summary of what was picked upstream -->
+        <!-- Context bar — read-only summary from upstream -->
         <div class="context-bar">
           <div class="context-item">
             <span class="lbl">Method</span>
@@ -310,16 +315,45 @@
         <!-- THE PICKER -->
         <section class="picker-section">
           <h3>Imprint colors</h3>
-          <div class="picker-help">Pick the exact ink colors for your imprint. Click a chip to change it; × to remove. Or skip — our specialist will confirm.</div>
+          <div class="picker-help">Click <b>+ Add color</b> to start picking. The picker stays open while you add — close it when you're done. Click a chip to change it, × to remove.</div>
 
-          <!-- Warning when chips > preferred -->
           <div id="preferredWarning" class="preferred-warning" hidden>
             <span class="icon">⚠</span>
             <span id="preferredWarningText"></span>
           </div>
 
-          <!-- Chip zone — chips + add button live together -->
+          <!-- Chip zone -->
           <div id="chipZone" class="chip-zone"></div>
+
+          <!-- Inline picker — expands BELOW the chip zone, structurally part of the same component -->
+          <div id="inlinePicker" class="inline-picker" hidden>
+            <!-- Mode bar -->
+            <div class="picker-head-bar">
+              <span class="picker-mode-label" id="pickerModeLabel">Add color</span>
+              <button class="picker-done" id="pickerDone">Done picking</button>
+            </div>
+            <!-- Tier tabs -->
+            <div class="tier-tabs">
+              <button data-tier="standard" id="tabStandard">Standard</button>
+              <button data-tier="pms" id="tabPms">PMS <span class="badge">+$20</span></button>
+            </div>
+            <!-- Search + filters -->
+            <div class="picker-search-wrap">
+              <div id="pmsDisclaimer" class="pms-disclaimer" hidden><b>Screen colors are approximate.</b> We match to physical Pantone Coated swatches — confirm with a Pantone book or your designer for exact match.</div>
+              <input type="text" class="pop-search" id="popSearch" placeholder="Search colors" autocomplete="off">
+              <div id="pmsFilters" class="pms-filters" hidden>
+                <button class="pms-chip active" data-pms-filter="all">All</button>
+                <button class="pms-chip" data-pms-filter="C">Coated</button>
+                <button class="pms-chip" data-pms-filter="U">Uncoated</button>
+                <button class="pms-chip" data-pms-filter="neon">Neon</button>
+                <button class="pms-chip" data-pms-filter="metallic">Metallic</button>
+              </div>
+            </div>
+            <!-- Body -->
+            <div class="picker-body" id="popBody"></div>
+            <!-- Foot -->
+            <div class="picker-foot" id="popFoot"></div>
+          </div>
 
           <!-- Counter -->
           <div class="chip-counter">
@@ -336,7 +370,6 @@
         </div>
       </div>
 
-      <!-- Price summary -->
       <aside class="modal-summary">
         <h5>Order summary</h5>
         <div class="price-block">
@@ -360,41 +393,17 @@
     </div>
   </div>
 
-  <!-- Annotation key -->
   <div class="annotation-key">
-    <h5>v2 changes</h5>
+    <h5>v3 changes — Pattern A (inline picker)</h5>
     <ul>
-      <li><b>One control, chip-based picks.</b> Slot rows replaced by a single <code>+ Add color</code> button plus chips that capture each selection. Chips are clickable to edit, with × to remove.</li>
-      <li><b>Tier tabs inside the popover.</b> Standard / PMS choice moved off the slot row and into the popover header — the new color's tier is decided where the new color is chosen.</li>
-      <li><b>Modal reframed.</b> Method and preferred color count come from the previous step — shown as a read-only context bar with an <code>Edit upstream →</code> link. Demo controls above the modal let you simulate different upstream inputs.</li>
-      <li><b>Soft warning over the chips</b> when picked colors exceed the preferred count — explains the price impact instead of blocking.</li>
-      <li><b>Vertical space shrunk significantly</b> — the picker section is roughly 1/3 the height of v1.</li>
+      <li><b>No popover.</b> The picker now expands inline below the chip zone, as part of the same component. No popup-on-popup. Single surface end-to-end.</li>
+      <li><b>Stays open across multiple picks.</b> Click <code>+ Add color</code> once to open; click swatches/PMS rows to append chips. Each new chip flashes in. Close with the <b>Done picking</b> button, the <code>Esc</code> key, or by focusing the artwork-instructions textarea.</li>
+      <li><b>Edit mode.</b> Click an existing chip to edit it — the picker opens with that chip's tier pre-selected and the current color highlighted; picking replaces it. After a replace the picker switches back to add mode automatically (so the next click appends, not replaces).</li>
+      <li><b>Eye-travel reduced</b> — picker is anchored exactly where you clicked Add (or the chip you're editing); no popover positioning gymnastics.</li>
+      <li><b>Wider grid.</b> Inline picker is the full width of the modal body (~480 px), so the swatch grid runs 10 columns instead of 8.</li>
+      <li><b>Add-color button doubles as picker toggle.</b> When the picker is open it shows a filled "navy" state; clicking it again closes the picker. Mirrors the Notion/Linear tag-picker pattern.</li>
     </ul>
   </div>
-</div>
-
-<!-- Popover (handles both Standard and PMS via internal tier tabs) -->
-<div id="popover" class="popover" hidden>
-  <div class="pop-head">
-    <div class="tier-tabs">
-      <button data-tier="standard" id="tabStandard">Standard</button>
-      <button data-tier="pms" id="tabPms">PMS <span class="badge">+$20</span></button>
-    </div>
-    <div class="pop-search-wrap">
-      <!-- PMS-specific disclaimer slot -->
-      <div id="pmsDisclaimer" class="pms-disclaimer" hidden><b>Screen colors are approximate.</b> We match to physical Pantone Coated swatches — confirm with a Pantone book or your designer for exact match.</div>
-      <input type="text" class="pop-search" id="popSearch" placeholder="Search colors" autocomplete="off">
-      <div id="pmsFilters" class="pms-filters" hidden>
-        <button class="pms-chip active" data-pms-filter="all">All</button>
-        <button class="pms-chip" data-pms-filter="C">Coated</button>
-        <button class="pms-chip" data-pms-filter="U">Uncoated</button>
-        <button class="pms-chip" data-pms-filter="neon">Neon</button>
-        <button class="pms-chip" data-pms-filter="metallic">Metallic</button>
-      </div>
-    </div>
-  </div>
-  <div class="pop-body" id="popBody"></div>
-  <div class="pop-foot" id="popFoot"></div>
 </div>
 
 <!-- Toast -->
@@ -470,7 +479,6 @@ const STANDARD_PALETTE = {
 };
 
 const PMS_PALETTE = [
-  // Blues
   { code: '286 C',  name: 'Reflex Blue family', hex: '#0033A0', kind: 'C' },
   { code: '287 C',  name: 'Royal Blue',         hex: '#003087', kind: 'C' },
   { code: '288 C',  name: 'Dark Royal',         hex: '#002663', kind: 'C' },
@@ -484,7 +492,6 @@ const PMS_PALETTE = [
   { code: '7686 C', name: 'Steel Blue',         hex: '#1D4F91', kind: 'C' },
   { code: 'Reflex Blue C', name: 'Reflex Blue', hex: '#002395', kind: 'C' },
   { code: 'Process Blue C',name: 'Process Blue',hex: '#0085CA', kind: 'C' },
-  // Reds
   { code: '185 C',  name: 'Bright Red',         hex: '#E4002B', kind: 'C' },
   { code: '186 C',  name: 'Classic Red',        hex: '#C8102E', kind: 'C' },
   { code: '187 C',  name: 'Dark Red',           hex: '#A6192E', kind: 'C' },
@@ -498,7 +505,6 @@ const PMS_PALETTE = [
   { code: 'Red 032 C', name: 'Pantone Red',     hex: '#EF3340', kind: 'C' },
   { code: 'Rhodamine Red C', name: 'Rhodamine', hex: '#E10098', kind: 'C' },
   { code: 'Warm Red C', name: 'Warm Red',       hex: '#F9423A', kind: 'C' },
-  // Oranges
   { code: '158 C',  name: 'Bright Orange',      hex: '#E87722', kind: 'C' },
   { code: '165 C',  name: 'Orange',             hex: '#FF671F', kind: 'C' },
   { code: '166 C',  name: 'Vivid Orange',       hex: '#E35205', kind: 'C' },
@@ -506,14 +512,12 @@ const PMS_PALETTE = [
   { code: '1665 C', name: 'Pumpkin',            hex: '#D86018', kind: 'C' },
   { code: '7417 C', name: 'Coral',              hex: '#E04E39', kind: 'C' },
   { code: 'Orange 021 C', name: 'Pantone Orange',hex:'#FE5000', kind: 'C' },
-  // Yellows
   { code: '109 C',  name: 'Sun Yellow',         hex: '#FFD100', kind: 'C' },
   { code: '116 C',  name: 'Bright Yellow',      hex: '#FFCD00', kind: 'C' },
   { code: '1225 C', name: 'Golden Yellow',      hex: '#FFC845', kind: 'C' },
   { code: '7405 C', name: 'Mustard',            hex: '#F1B300', kind: 'C' },
   { code: '7548 C', name: 'Amber',              hex: '#FFC600', kind: 'C' },
   { code: 'Yellow C', name: 'Pantone Yellow',   hex: '#FEDD00', kind: 'C' },
-  // Greens
   { code: '348 C',  name: 'Forest Green',       hex: '#00843D', kind: 'C' },
   { code: '349 C',  name: 'Dark Forest',        hex: '#046A38', kind: 'C' },
   { code: '354 C',  name: 'Kelly Green',        hex: '#00B140', kind: 'C' },
@@ -523,31 +527,26 @@ const PMS_PALETTE = [
   { code: '364 C',  name: 'Olive',              hex: '#4A7729', kind: 'C' },
   { code: '7740 C', name: 'Garden Green',       hex: '#43B02A', kind: 'C' },
   { code: '376 C',  name: 'Lime Green',         hex: '#84BD00', kind: 'C' },
-  // Purples
   { code: '266 C',  name: 'Royal Purple',       hex: '#5F249F', kind: 'C' },
   { code: '267 C',  name: 'Deep Purple',        hex: '#4C12A1', kind: 'C' },
   { code: '268 C',  name: 'Dark Purple',        hex: '#582C83', kind: 'C' },
   { code: '2685 C', name: 'Royal Violet',       hex: '#330072', kind: 'C' },
   { code: '7669 C', name: 'Plum',               hex: '#5D4B8C', kind: 'C' },
   { code: 'Purple C', name: 'Pantone Purple',   hex: '#BB29BB', kind: 'C' },
-  // Grays/Black
   { code: 'Black 6 C', name: 'Rich Black',      hex: '#101820', kind: 'C' },
   { code: 'Cool Gray 6 C', name: 'Cool Gray',   hex: '#A7A8AA', kind: 'C' },
   { code: 'Cool Gray 9 C', name: 'Mid Gray',    hex: '#75787B', kind: 'C' },
   { code: 'Cool Gray 11 C',name: 'Dark Gray',   hex: '#53565A', kind: 'C' },
   { code: '425 C',  name: 'Slate Gray',         hex: '#54585A', kind: 'C' },
   { code: '426 C',  name: 'Charcoal',           hex: '#1F2A44', kind: 'C' },
-  // Metallics
   { code: '877 C',  name: 'Metallic Silver',    hex: '#8A8D8F', kind: 'metallic' },
   { code: '873 C',  name: 'Metallic Gold',      hex: '#866D4B', kind: 'metallic' },
   { code: '8003 C', name: 'Metallic Copper',    hex: '#825C3A', kind: 'metallic' },
   { code: '8401 C', name: 'Metallic Bronze',    hex: '#6E5A3C', kind: 'metallic' },
-  // Uncoated samples
   { code: '286 U',  name: 'Reflex Blue (U)',    hex: '#1A3578', kind: 'U' },
   { code: '185 U',  name: 'Bright Red (U)',     hex: '#D52B1E', kind: 'U' },
   { code: '354 U',  name: 'Kelly Green (U)',    hex: '#319B42', kind: 'U' },
   { code: '116 U',  name: 'Bright Yellow (U)',  hex: '#F3C300', kind: 'U' },
-  // Neons
   { code: '802 C',  name: 'Neon Green',         hex: '#44D62C', kind: 'neon' },
   { code: '805 C',  name: 'Neon Pink',          hex: '#F95375', kind: 'neon' },
   { code: '806 C',  name: 'Neon Magenta',       hex: '#EA3592', kind: 'neon' },
@@ -560,22 +559,23 @@ const PMS_PALETTE = [
 const state = {
   method: 'transfer',
   preferred: 3,
-  chips: [],            // [{ id, tier: 'standard'|'pms', color: {...} }]
-  recentlyUsed: [],     // standard color objects
-  editingChipId: null,  // null = adding new
+  chips: [],
+  recentlyUsed: [],
+  pickerOpen: false,
+  pickerMode: 'add',      // 'add' | 'edit'
+  editingChipId: null,
   popoverTier: 'standard',
   pmsFilter: 'all',
+  justAddedChipId: null,  // for flash animation
 };
 
 let nextChipId = 1;
-const BASE_ITEM_PRICE = 908.64; // for 144 units of the demo product, before any setup/extras
+const BASE_ITEM_PRICE = 908.64;
 const FIRST_SETUP = 50;
-let lastTotal = BASE_ITEM_PRICE + FIRST_SETUP;
 
 /* ===================== Utilities ===================== */
 
 const $ = (sel) => document.querySelector(sel);
-
 function showToast(msg, warn = false) {
   const t = $('#toast');
   t.textContent = msg;
@@ -583,28 +583,16 @@ function showToast(msg, warn = false) {
   clearTimeout(showToast._t);
   showToast._t = setTimeout(() => { t.className = 'toast'; }, 3200);
 }
-
-function isLightHex(hex) {
-  const c = hex.replace('#', '');
-  const r = parseInt(c.slice(0, 2), 16);
-  const g = parseInt(c.slice(2, 4), 16);
-  const b = parseInt(c.slice(4, 6), 16);
-  return (r * 0.299 + g * 0.587 + b * 0.114) > 200;
-}
-
-function normalizePmsQuery(q) {
-  return q.trim().toLowerCase().replace(/^pms\s*/, '').replace(/\s+/g, ' ');
-}
-
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-}
+function normalizePmsQuery(q) { return q.trim().toLowerCase().replace(/^pms\s*/, '').replace(/\s+/g, ' '); }
+function escapeHtml(s) { return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function ordinalSuffix(n) { const s = ['th','st','nd','rd']; const v = n % 100; return s[(v - 20) % 10] || s[v] || s[0]; }
 
 /* ===================== Render ===================== */
 
 function render() {
   renderContext();
   renderChips();
+  renderInlinePicker();
   renderPreferredWarning();
   renderPrice();
 }
@@ -615,7 +603,6 @@ function renderContext() {
   $('#ctxPms').textContent = m.pmsLabel;
   $('#ctxPreferred').textContent = state.preferred;
   $('#ctxMax').textContent = m.maxColors;
-  // Sync top selectors (in case demo-state triggered changes)
   $('#methodSelect').value = state.method;
   $('#preferredSelect').value = String(state.preferred);
 }
@@ -624,6 +611,7 @@ function renderChips() {
   const m = METHODS[state.method];
   const zone = $('#chipZone');
   zone.innerHTML = '';
+  zone.classList.toggle('picker-attached', state.pickerOpen);
 
   if (state.chips.length === 0) {
     const empty = document.createElement('span');
@@ -638,6 +626,7 @@ function renderChips() {
     el.className = 'color-chip';
     el.dataset.chipId = chip.id;
     if (state.editingChipId === chip.id) el.classList.add('open');
+    if (state.justAddedChipId === chip.id) el.classList.add('just-added');
 
     const sw = document.createElement('span');
     sw.className = 'sw';
@@ -668,24 +657,26 @@ function renderChips() {
     rm.addEventListener('click', (e) => { e.stopPropagation(); removeChip(chip.id); });
     el.appendChild(rm);
 
-    el.addEventListener('click', () => openPopoverForChip(chip.id, el));
+    el.addEventListener('click', () => openPickerForEdit(chip.id));
     zone.appendChild(el);
   });
 
-  // Add button — appended to chip zone
+  // Add button — also toggles picker
   const addBtn = document.createElement('button');
   addBtn.type = 'button';
   addBtn.className = 'add-color-btn';
   addBtn.id = 'addColorBtn';
+  if (state.pickerOpen && state.pickerMode === 'add') addBtn.classList.add('is-active');
+  const isMax = state.chips.length >= m.maxColors;
+  if (isMax && !state.pickerOpen) { addBtn.disabled = true; addBtn.title = `Maximum ${m.maxColors} colors for ${m.label}`; }
   addBtn.innerHTML = `<span class="plus">+</span><span>Add color</span>`;
-  if (state.chips.length >= m.maxColors) {
-    addBtn.disabled = true;
-    addBtn.title = `Maximum ${m.maxColors} colors for ${m.label}`;
-  }
-  addBtn.addEventListener('click', () => openPopoverForAdd(addBtn));
+  addBtn.addEventListener('click', () => {
+    if (state.pickerOpen && state.pickerMode === 'add') closePicker();
+    else openPickerForAdd();
+  });
   zone.appendChild(addBtn);
 
-  // Counter line
+  // Counter
   $('#chipCount').textContent = state.chips.length;
   $('#chipMax').textContent = m.maxColors;
   $('#chipPreferred').textContent = state.preferred;
@@ -698,15 +689,15 @@ function renderChips() {
     const parts = [];
     if (stdCount > 0) parts.push(`${stdCount} standard`);
     if (pmsCount > 0) parts.push(`${pmsCount} PMS`);
-    const sp = document.createElement('span');
-    sp.textContent = parts.join(' · ');
-    summary.appendChild(sp);
+    const sp = document.createElement('span'); sp.textContent = parts.join(' · '); summary.appendChild(sp);
     if (pmsCount > 0) {
-      const ps = document.createElement('span');
-      ps.className = 'pms-sum';
-      ps.textContent = `+$${pmsCount * 20}`;
-      summary.appendChild(ps);
+      const ps = document.createElement('span'); ps.className = 'pms-sum'; ps.textContent = `+$${pmsCount * 20}`; summary.appendChild(ps);
     }
+  }
+
+  // Clear just-added marker after the animation
+  if (state.justAddedChipId !== null) {
+    setTimeout(() => { state.justAddedChipId = null; }, 350);
   }
 }
 
@@ -714,15 +705,12 @@ function renderPreferredWarning() {
   const w = $('#preferredWarning');
   const m = METHODS[state.method];
   const n = state.chips.length;
-
   if (n > state.preferred) {
     const extra = n - state.preferred;
-    // Project the additional cost vs. preferred count
     const newSetup = extra * m.setupPerExtra;
     const newRun = extra * m.extraPerColor * 144;
     const pmsExtra = state.chips.slice(state.preferred).filter(c => c.tier === 'pms').length * 20;
     const total = newSetup + newRun + pmsExtra;
-
     let txt = `You preferred <b>${state.preferred}</b> color${state.preferred === 1 ? '' : 's'}. `;
     if (extra === 1) {
       txt += `Adding a <b>${n}${ordinalSuffix(n)} color</b> raises your price by <b>$${total.toFixed(2)}</b>`;
@@ -737,19 +725,12 @@ function renderPreferredWarning() {
   }
 }
 
-function ordinalSuffix(n) {
-  const s = ['th','st','nd','rd'];
-  const v = n % 100;
-  return s[(v - 20) % 10] || s[v] || s[0];
-}
-
 function renderPrice() {
   const m = METHODS[state.method];
   const total = computeTotal();
   $('#priceTotal').textContent = total.toFixed(2);
   $('#priceEach').textContent = (total / 144).toFixed(2);
 
-  // Delta vs. preferred-count baseline (i.e. if user picked exactly `preferred` standard colors)
   const baseline = computeBaseline();
   const delta = total - baseline;
   const pd = $('#priceDelta');
@@ -757,11 +738,8 @@ function renderPrice() {
     const sign = delta > 0 ? '+' : '-';
     $('#priceDeltaText').innerHTML = `${sign}$${Math.abs(delta).toFixed(2)} vs. ${state.preferred}-color baseline`;
     pd.hidden = false;
-  } else {
-    pd.hidden = true;
-  }
+  } else { pd.hidden = true; }
 
-  // Breakdown rebuild
   const extra = Math.max(0, state.chips.length - 1);
   const extraSetup = extra * m.setupPerExtra;
   const extraRun = extra * m.extraPerColor * 144;
@@ -774,15 +752,9 @@ function renderPrice() {
     ['Item × 144', '$' + BASE_ITEM_PRICE.toFixed(2)],
     ['Setup fee (first color)', '$' + FIRST_SETUP.toFixed(2)],
   ];
-  if (extra > 0 && m.setupPerExtra > 0) {
-    rows.push([`Additional setup (${extra} × $${m.setupPerExtra})`, '$' + extraSetup.toFixed(2)]);
-  }
-  if (extra > 0 && m.extraPerColor > 0) {
-    rows.push([`Additional color run (${extra} × $${m.extraPerColor.toFixed(2)} × 144)`, '$' + extraRun.toFixed(2)]);
-  }
-  if (pmsCount > 0) {
-    rows.push([`Pantone match (${pmsCount} × $20)`, '+$' + pmsTotal.toFixed(2), 'pms-line']);
-  }
+  if (extra > 0 && m.setupPerExtra > 0) rows.push([`Additional setup (${extra} × $${m.setupPerExtra})`, '$' + extraSetup.toFixed(2)]);
+  if (extra > 0 && m.extraPerColor > 0) rows.push([`Additional color run (${extra} × $${m.extraPerColor.toFixed(2)} × 144)`, '$' + extraRun.toFixed(2)]);
+  if (pmsCount > 0) rows.push([`Pantone match (${pmsCount} × $20)`, '+$' + pmsTotal.toFixed(2), 'pms-line']);
   rows.forEach(([l, a, cls]) => {
     const ld = document.createElement('div');
     ld.className = 'label' + (cls ? ' ' + cls : '');
@@ -790,11 +762,8 @@ function renderPrice() {
     const ad = document.createElement('div');
     ad.className = 'amt' + (cls ? ' ' + cls : '');
     ad.textContent = a;
-    bd.appendChild(ld);
-    bd.appendChild(ad);
+    bd.appendChild(ld); bd.appendChild(ad);
   });
-
-  lastTotal = total;
 }
 
 function computeTotal() {
@@ -805,13 +774,11 @@ function computeTotal() {
   const extraRun = extra * m.extraPerColor * 144;
   const pmsCount = state.chips.filter(c => c.tier === 'pms').length;
   const pmsTotal = pmsCount * 20;
-  // First-setup applies only if at least one color is picked
   const firstSetup = n > 0 ? FIRST_SETUP : 0;
   return BASE_ITEM_PRICE + firstSetup + extraSetup + extraRun + pmsTotal;
 }
 
 function computeBaseline() {
-  // Hypothetical: exactly `preferred` colors, all standard
   const m = METHODS[state.method];
   const n = state.preferred;
   const extra = Math.max(0, n - 1);
@@ -821,68 +788,45 @@ function computeBaseline() {
   return BASE_ITEM_PRICE + firstSetup + extraSetup + extraRun;
 }
 
-/* ===================== Popover ===================== */
+/* ===================== Inline picker ===================== */
 
-function openPopoverForAdd(anchorEl) {
+function renderInlinePicker() {
+  const pickerEl = $('#inlinePicker');
+  pickerEl.hidden = !state.pickerOpen;
+  if (!state.pickerOpen) return;
+
   const m = METHODS[state.method];
-  if (state.chips.length >= m.maxColors) {
-    showToast(`Maximum ${m.maxColors} colors for ${m.label}`, true);
-    return;
+
+  // Mode label
+  const label = $('#pickerModeLabel');
+  if (state.pickerMode === 'edit') {
+    const chip = state.chips.find(c => c.id === state.editingChipId);
+    if (chip) {
+      const display = chip.tier === 'pms' ? chip.color.code : chip.color.name;
+      label.innerHTML = `<span style="color: var(--text-muted); font-weight: 500;">Replacing</span> <span class="target"><span class="sw-mini" style="background:${chip.color.hex}"></span>${escapeHtml(display)}</span>`;
+    } else {
+      label.textContent = 'Add color';
+    }
+  } else {
+    const used = state.chips.length;
+    label.innerHTML = used === 0
+      ? `Add color`
+      : `Add color <span style="color: var(--text-muted); font-weight: 500;">·</span> <span style="color: var(--text-muted); font-weight: 500;">${used} of ${m.maxColors} used</span>`;
   }
-  state.editingChipId = null;
-  state.popoverTier = 'standard';
-  positionPopover(anchorEl);
-  renderPopover();
-  $('#popover').hidden = false;
-  setTimeout(() => $('#popSearch').focus(), 50);
-}
 
-function openPopoverForChip(chipId, anchorEl) {
-  const chip = state.chips.find(c => c.id === chipId);
-  if (!chip) return;
-  state.editingChipId = chipId;
-  state.popoverTier = chip.tier;
-  positionPopover(anchorEl);
-  renderPopover();
-  $('#popover').hidden = false;
-  // Mark current chip
-  document.querySelectorAll('.color-chip').forEach(c => c.classList.toggle('open', c.dataset.chipId === String(chipId)));
-}
-
-function positionPopover(anchorEl) {
-  const pop = $('#popover');
-  pop.style.visibility = 'hidden';
-  pop.hidden = false;
-  const rect = anchorEl.getBoundingClientRect();
-  const popH = pop.offsetHeight || 500;
-  const popW = pop.offsetWidth || 460;
-  const vw = window.innerWidth, vh = window.innerHeight;
-  let top = rect.bottom + 8;
-  if (top + popH > vh - 16) top = Math.max(16, rect.top - popH - 8);
-  let left = rect.left;
-  if (left + popW > vw - 16) left = vw - popW - 16;
-  pop.style.top = top + 'px';
-  pop.style.left = left + 'px';
-  pop.style.visibility = '';
-}
-
-function renderPopover() {
-  const m = METHODS[state.method];
-
-  // Tabs
+  // Tier tabs
   $('#tabStandard').classList.toggle('active', state.popoverTier === 'standard');
   $('#tabPms').classList.toggle('active', state.popoverTier === 'pms');
   $('#tabPms').disabled = (m.pms === 'false');
 
-  // Show/hide PMS-specific UI
+  // PMS-only UI
   $('#pmsDisclaimer').hidden = state.popoverTier !== 'pms';
   $('#pmsFilters').hidden = state.popoverTier !== 'pms';
 
-  // Search placeholder
+  // Search
   $('#popSearch').placeholder = state.popoverTier === 'pms'
     ? 'Search PMS code or name (e.g., 286 C, Reflex Blue)'
     : 'Search colors (e.g., red, navy, gold)';
-  $('#popSearch').value = '';
 
   // Foot
   const foot = $('#popFoot');
@@ -896,7 +840,7 @@ function renderPopover() {
     const sw = document.createElement('button');
     sw.className = 'pop-foot-link';
     sw.textContent = 'Use a standard color →';
-    sw.addEventListener('click', () => { state.popoverTier = 'standard'; renderPopover(); });
+    sw.addEventListener('click', () => { state.popoverTier = 'standard'; renderInlinePicker(); });
     foot.appendChild(sw);
   } else {
     const left = document.createElement('span');
@@ -908,30 +852,28 @@ function renderPopover() {
     sw.addEventListener('click', () => {
       if (m.pms === 'false') { showToast(`PMS not available for ${m.label}`, true); return; }
       state.popoverTier = 'pms';
-      renderPopover();
+      renderInlinePicker();
     });
     foot.appendChild(sw);
   }
 
   // Body
-  if (state.popoverTier === 'standard') renderStandardBody('');
-  else renderPmsBody('');
+  if (state.popoverTier === 'standard') renderStandardBody($('#popSearch').value);
+  else renderPmsBody($('#popSearch').value);
 }
 
 function renderStandardBody(query) {
   const body = $('#popBody');
   body.innerHTML = '';
-  const q = query.trim().toLowerCase();
+  const q = (query || '').trim().toLowerCase();
 
   if (!q && state.recentlyUsed.length > 0) {
     const fam = document.createElement('div');
     fam.className = 'family';
     fam.innerHTML = '<h6>Recently used</h6>';
-    const grid = document.createElement('div');
-    grid.className = 'swatch-grid';
-    state.recentlyUsed.slice(0, 8).forEach(c => grid.appendChild(makeSwatchBtn(c)));
-    fam.appendChild(grid);
-    body.appendChild(fam);
+    const grid = document.createElement('div'); grid.className = 'swatch-grid';
+    state.recentlyUsed.slice(0, 10).forEach(c => grid.appendChild(makeSwatchBtn(c)));
+    fam.appendChild(grid); body.appendChild(fam);
   }
 
   let any = false;
@@ -939,19 +881,16 @@ function renderStandardBody(query) {
     const filtered = colors.filter(c => !q || c.name.toLowerCase().includes(q));
     if (filtered.length === 0) return;
     any = true;
-    const fam = document.createElement('div');
-    fam.className = 'family';
+    const fam = document.createElement('div'); fam.className = 'family';
     fam.innerHTML = `<h6>${famName}</h6>`;
-    const grid = document.createElement('div');
-    grid.className = 'swatch-grid';
+    const grid = document.createElement('div'); grid.className = 'swatch-grid';
     filtered.forEach(c => grid.appendChild(makeSwatchBtn(c)));
-    fam.appendChild(grid);
-    body.appendChild(fam);
+    fam.appendChild(grid); body.appendChild(fam);
   });
 
   if (!any) {
     body.innerHTML = `<div class="no-match">No standard color matches "<b>${escapeHtml(query)}</b>".<br><button class="switch-link" id="switchInline">Try searching PMS →</button></div>`;
-    $('#switchInline').addEventListener('click', () => { state.popoverTier = 'pms'; renderPopover(); });
+    $('#switchInline').addEventListener('click', () => { state.popoverTier = 'pms'; renderInlinePicker(); });
   }
 }
 
@@ -961,12 +900,8 @@ function makeSwatchBtn(color) {
   b.className = 'sw-btn';
   b.style.background = color.hex;
   b.setAttribute('aria-label', color.name);
-  const tip = document.createElement('span');
-  tip.className = 'tip';
-  tip.textContent = color.name;
-  b.appendChild(tip);
-  // Highlight if editing this chip
-  if (state.editingChipId !== null) {
+  const tip = document.createElement('span'); tip.className = 'tip'; tip.textContent = color.name; b.appendChild(tip);
+  if (state.pickerMode === 'edit' && state.editingChipId !== null) {
     const chip = state.chips.find(c => c.id === state.editingChipId);
     if (chip && chip.tier === 'standard' && chip.color.hex === color.hex) b.classList.add('selected');
   }
@@ -977,9 +912,8 @@ function makeSwatchBtn(color) {
 function renderPmsBody(query) {
   const body = $('#popBody');
   body.innerHTML = '';
-  const q = normalizePmsQuery(query);
+  const q = normalizePmsQuery(query || '');
   const filter = state.pmsFilter;
-
   let results = PMS_PALETTE.filter(p => {
     if (filter === 'C') return p.kind === 'C';
     if (filter === 'U') return p.kind === 'U';
@@ -987,26 +921,22 @@ function renderPmsBody(query) {
     if (filter === 'metallic') return p.kind === 'metallic';
     return true;
   });
-  if (q) {
-    results = results.filter(p =>
-      p.code.toLowerCase().replace(/\s+/g, ' ').includes(q) ||
-      p.code.toLowerCase().replace(/\s+/g, '').includes(q.replace(/\s+/g, '')) ||
-      p.name.toLowerCase().includes(q)
-    );
-  }
+  if (q) results = results.filter(p =>
+    p.code.toLowerCase().replace(/\s+/g, ' ').includes(q) ||
+    p.code.toLowerCase().replace(/\s+/g, '').includes(q.replace(/\s+/g, '')) ||
+    p.name.toLowerCase().includes(q)
+  );
 
   if (results.length === 0) {
     body.innerHTML = `<div class="no-match">No Pantone match for "<b>${escapeHtml(query)}</b>".<br><span style="color: var(--text-light); font-size: 12px;">Tip: try "286 C" or "Reflex Blue"</span></div>`;
     return;
   }
-
-  const list = document.createElement('div');
-  list.className = 'pms-list';
+  const list = document.createElement('div'); list.className = 'pms-list';
   results.forEach(p => {
     const row = document.createElement('button');
     row.type = 'button';
     row.className = 'pms-row';
-    if (state.editingChipId !== null) {
+    if (state.pickerMode === 'edit' && state.editingChipId !== null) {
       const chip = state.chips.find(c => c.id === state.editingChipId);
       if (chip && chip.tier === 'pms' && chip.color.code === p.code) row.classList.add('selected');
     }
@@ -1017,41 +947,99 @@ function renderPmsBody(query) {
   body.appendChild(list);
 }
 
+/* ===================== Open/close picker ===================== */
+
+function openPickerForAdd() {
+  const m = METHODS[state.method];
+  if (state.chips.length >= m.maxColors) {
+    showToast(`Maximum ${m.maxColors} colors for ${m.label}`, true);
+    return;
+  }
+  state.pickerOpen = true;
+  state.pickerMode = 'add';
+  state.editingChipId = null;
+  state.popoverTier = 'standard';
+  $('#popSearch').value = '';
+  render();
+  setTimeout(() => $('#popSearch').focus(), 30);
+}
+
+function openPickerForEdit(chipId) {
+  const chip = state.chips.find(c => c.id === chipId);
+  if (!chip) return;
+  state.pickerOpen = true;
+  state.pickerMode = 'edit';
+  state.editingChipId = chipId;
+  state.popoverTier = chip.tier;
+  $('#popSearch').value = '';
+  render();
+  setTimeout(() => $('#popSearch').focus(), 30);
+}
+
+function closePicker() {
+  state.pickerOpen = false;
+  state.pickerMode = 'add';
+  state.editingChipId = null;
+  render();
+}
+
 /* ===================== Commits ===================== */
 
 function commitStandardColor(color) {
-  if (state.editingChipId !== null) {
+  if (state.pickerMode === 'edit' && state.editingChipId !== null) {
     const chip = state.chips.find(c => c.id === state.editingChipId);
     if (chip) { chip.tier = 'standard'; chip.color = { ...color }; }
+    // After edit-replace, switch back to add mode (picker stays open)
+    state.pickerMode = 'add';
+    state.editingChipId = null;
   } else {
-    state.chips.push({ id: nextChipId++, tier: 'standard', color: { ...color } });
+    const m = METHODS[state.method];
+    if (state.chips.length >= m.maxColors) {
+      showToast(`Maximum ${m.maxColors} colors reached`, true);
+      return;
+    }
+    const newChip = { id: nextChipId++, tier: 'standard', color: { ...color } };
+    state.chips.push(newChip);
+    state.justAddedChipId = newChip.id;
+    // If we hit max, auto-close
+    if (state.chips.length >= m.maxColors) {
+      state.pickerOpen = false;
+      state.pickerMode = 'add';
+    }
   }
-  state.recentlyUsed = [color, ...state.recentlyUsed.filter(c => c.hex !== color.hex)].slice(0, 8);
-  closePopover();
+  state.recentlyUsed = [color, ...state.recentlyUsed.filter(c => c.hex !== color.hex)].slice(0, 10);
+  $('#popSearch').value = '';
   render();
 }
 
 function commitPmsColor(p) {
-  if (state.editingChipId !== null) {
+  if (state.pickerMode === 'edit' && state.editingChipId !== null) {
     const chip = state.chips.find(c => c.id === state.editingChipId);
     if (chip) { chip.tier = 'pms'; chip.color = { ...p }; }
+    state.pickerMode = 'add';
+    state.editingChipId = null;
   } else {
-    state.chips.push({ id: nextChipId++, tier: 'pms', color: { ...p } });
+    const m = METHODS[state.method];
+    if (state.chips.length >= m.maxColors) {
+      showToast(`Maximum ${m.maxColors} colors reached`, true);
+      return;
+    }
+    const newChip = { id: nextChipId++, tier: 'pms', color: { ...p } };
+    state.chips.push(newChip);
+    state.justAddedChipId = newChip.id;
+    if (state.chips.length >= m.maxColors) {
+      state.pickerOpen = false;
+      state.pickerMode = 'add';
+    }
   }
-  closePopover();
+  $('#popSearch').value = '';
   render();
 }
 
 function removeChip(id) {
   state.chips = state.chips.filter(c => c.id !== id);
-  if (state.editingChipId === id) closePopover();
+  if (state.editingChipId === id) { state.editingChipId = null; state.pickerMode = 'add'; }
   render();
-}
-
-function closePopover() {
-  $('#popover').hidden = true;
-  state.editingChipId = null;
-  document.querySelectorAll('.color-chip').forEach(c => c.classList.remove('open'));
 }
 
 /* ===================== Method/preferred handlers ===================== */
@@ -1059,26 +1047,17 @@ function closePopover() {
 function setMethod(methodKey) {
   const newMethod = METHODS[methodKey];
   state.method = methodKey;
-
-  // Trim excess chips
   if (state.chips.length > newMethod.maxColors) {
     const dropped = state.chips.length - newMethod.maxColors;
     state.chips = state.chips.slice(0, newMethod.maxColors);
     showToast(`${newMethod.label}: max ${newMethod.maxColors} colors. Removed ${dropped} extra.`, true);
   }
-
-  // Downgrade PMS chips if method doesn't support
   if (newMethod.pms === 'false') {
     const downgraded = state.chips.filter(c => c.tier === 'pms').length;
     state.chips.forEach(c => { if (c.tier === 'pms') { c.tier = 'standard'; c.color = { name: '— pick a standard color —', hex: '#E0E0E0' }; }});
     if (downgraded > 0) showToast(`${newMethod.label} doesn't support PMS. ${downgraded} chip${downgraded > 1 ? 's' : ''} reset.`, true);
   }
-
-  // Clamp preferred if it exceeds new max
-  if (state.preferred > newMethod.maxColors) {
-    state.preferred = newMethod.maxColors;
-  }
-
+  if (state.preferred > newMethod.maxColors) state.preferred = newMethod.maxColors;
   render();
 }
 
@@ -1094,12 +1073,12 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#methodSelect').addEventListener('change', e => setMethod(e.target.value));
   $('#preferredSelect').addEventListener('change', e => setPreferred(parseInt(e.target.value, 10)));
 
-  $('#tabStandard').addEventListener('click', () => { state.popoverTier = 'standard'; renderPopover(); });
+  $('#tabStandard').addEventListener('click', () => { state.popoverTier = 'standard'; renderInlinePicker(); });
   $('#tabPms').addEventListener('click', () => {
     const m = METHODS[state.method];
     if (m.pms === 'false') return;
     state.popoverTier = 'pms';
-    renderPopover();
+    renderInlinePicker();
   });
 
   $('#popSearch').addEventListener('input', e => {
@@ -1115,14 +1094,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.addEventListener('click', (e) => {
-    const insidePopover = e.target.closest('#popover');
-    const onChip = e.target.closest('.color-chip');
-    const onAdd = e.target.closest('.add-color-btn');
-    if (!insidePopover && !onChip && !onAdd) closePopover();
-  });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePopover(); });
+  $('#pickerDone').addEventListener('click', closePicker);
 
+  // Esc closes picker (not modal)
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && state.pickerOpen) { closePicker(); e.stopPropagation(); }});
+
+  // Focusing the artwork-instructions textarea is the natural "I'm done picking" signal
+  $('#instrTxt').addEventListener('focus', () => { if (state.pickerOpen) closePicker(); });
+
+  // Demo buttons
   document.querySelectorAll('[data-demo]').forEach(btn => {
     btn.addEventListener('click', () => runDemo(btn.dataset.demo));
   });
@@ -1131,7 +1111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function runDemo(name) {
-  closePopover();
+  closePicker();
   const sample = {
     black: { name: 'Black', hex: '#1A1A1A' },
     navy:  { name: 'Navy Blue', hex: '#0A2240' },
@@ -1141,9 +1121,7 @@ function runDemo(name) {
     pms185: { code: '185 C', name: 'Bright Red', hex: '#E4002B' },
   };
   switch(name) {
-    case 'empty':
-      state.chips = [];
-      break;
+    case 'empty':         state.chips = []; break;
     case 'below-preferred':
       state.preferred = 3;
       state.chips = [{ id: nextChipId++, tier: 'standard', color: sample.black }];

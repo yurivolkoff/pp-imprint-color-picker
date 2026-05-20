@@ -87,3 +87,12 @@ Component prototype for the imprint color picker that lives inside the artwork-u
   - **Demo controls reorganized** — Method and Preferred Colors are now dropdowns (instead of buttons), to demo upstream-input variation; quick states updated to `Empty / 1 of 3 / 3 of 3 / 4 of 3 (warning) / Mixed / Reset`.
   - **CSS fix:** added `[hidden] { display: none !important }` to override class-level `display: flex` (was leaking PMS filter chips into the Standard tab).
   - All other behavior (swatch grid for standard, PMS code search with fuzzy match, method-aware caps + PMS support semantics, embroidery thread-match disclaimer, downgrade toasts, calibration disclaimer) carried forward unchanged.
+- 2026-05-20: **v3 — Pattern A inline picker** in response to Yuri's concerns about click cost / eye-travel and popup-on-popup layering.
+  - **Popover removed.** The picker is now an inline section that expands below the chip zone — visually attached, no floating surface, no z-index layer. Zero popup-on-popup. Single surface end-to-end.
+  - **Sticky open across multiple picks.** Click `+ Add color` once → picker opens. Click swatches / PMS rows to append chips. Picker stays open. New chips animate in (scale + opacity pop). Close with the **Done picking** button, `Esc`, or by focusing the artwork-instructions textarea (natural progression signal).
+  - **Click cost for 3 colors dropped from 6 → 4** (1 Add + 3 picks vs. v2's 3×(Add+pick)). Eye-travel is one vertical column inside the picker section rather than a popover-button zigzag.
+  - **Add-color button doubles as picker toggle.** Filled navy state when picker is open. Click again to close. Mirrors Notion/Linear tag-picker pattern.
+  - **Edit mode.** Click an existing chip → picker opens with that chip's tier preselected and current color highlighted; picking *replaces* the chip; after replace, picker auto-switches to add mode (so next click appends, not replaces). Mode label at top of picker explicitly shows "Replacing [chip]" vs. "Add color · N of M used".
+  - **Auto-close at max.** Picking the last allowed color (when chips.length hits method max) closes the picker automatically — there's nothing left to do.
+  - **Wider swatch grid.** Inline picker is the full width of the modal body (~480 px), so the grid runs 10 columns instead of 8, density up ~25%.
+  - Visual continuity: chip zone has flat bottom border + picker has flat top border when picker is open, so they read as one component. Subtle shadow under the picker for separation from artwork instructions below.
