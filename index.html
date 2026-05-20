@@ -9,7 +9,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  /* === Tokens (from design/library/promotionpros-pdp.md) === */
+  /* ===================================================================
+     TOKENS  — from design/library/promotionpros-pdp.md
+     =================================================================== */
   :root {
     --orange-primary: #FE5000;
     --orange-hover:   #FE6A26;
@@ -17,6 +19,7 @@
     --orange-dark:    #CC4100;
     --navy-primary:   #001542;
     --navy-hover:     #001238;
+    --navy-active:    #001135;
     --text-body:      #525252;
     --text-dark:      #373737;
     --text-muted:     #6C6C6C;
@@ -28,7 +31,7 @@
     --border:         #868686;
     --border-soft:    #E0E0E0;
     --border-translucent: rgba(0,0,0,0.175);
-    --focus-ring:     rgba(0,21,66,0.25);
+    --focus-ring:     rgba(254,80,0,0.15);
     --success:        #2E7D32;
     --error:          #D32F2F;
     --highlight-bg:   #FFF7CC;
@@ -40,132 +43,203 @@
 
     --r-4: 4px; --r-6: 6px; --r-8: 8px; --r-12: 12px;
     --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px;
+
+    /* === TYPOGRAPHY SYSTEM === */
+    /* Section title — section headers inside the modal */
+    --fs-section: 14px;  --fw-section: 700;  --fc-section: var(--text-dark);
+    /* Sub-label — uppercase context labels, summary card, demo labels */
+    --fs-sublabel: 11px; --fw-sublabel: 700;
+    /* Help text — inline help under section titles */
+    --fs-help: 12px; --fw-help: 400; --fc-help: var(--text-muted);
+    /* Body */
+    --fs-body: 14px; --fw-body: 400; --fc-body: var(--text-body);
+    /* Tabular numerics */
+    --ff-numeric: 'Lato', system-ui, sans-serif;
   }
 
-  /* === Base === */
+  /* === BASE === */
   *, *::before, *::after { box-sizing: border-box; }
   [hidden] { display: none !important; }
-  html, body { margin: 0; padding: 0; background: var(--bg-page); color: var(--text-body); font-family: Lato, system-ui, sans-serif; font-size: 16px; line-height: 1.5; }
-  h1, h2, h3, h4, h5 { font-weight: 500; color: var(--text-dark); margin: 0; line-height: 1.2; }
+  html, body { margin: 0; padding: 0; background: var(--bg-page); color: var(--text-body); font-family: Lato, system-ui, sans-serif; font-size: var(--fs-body); line-height: 1.5; }
+  h1, h2, h3, h4, h5, h6 { margin: 0; line-height: 1.2; color: var(--text-dark); font-weight: 500; }
   button { font-family: inherit; cursor: pointer; }
   input, select, textarea { font-family: inherit; font-size: inherit; }
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 5px; }
   ::-webkit-scrollbar-thumb:hover { background: #aaa; }
 
-  /* === Page chrome === */
+  /* === TYPOGRAPHY HELPERS === */
+  .t-section { font-size: var(--fs-section); font-weight: var(--fw-section); color: var(--fc-section); line-height: 1.3; letter-spacing: 0; }
+  .t-sublabel { font-size: var(--fs-sublabel); font-weight: var(--fw-sublabel); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3; }
+  .t-help { font-size: var(--fs-help); font-weight: var(--fw-help); color: var(--fc-help); line-height: 1.45; }
+
+  /* === BUTTON SYSTEM === */
+  /* Standard transition for all interactive elements */
+  .btn { font-family: inherit; cursor: pointer; transition: all 0.15s ease; border-radius: var(--r-6); font-weight: 700; }
+  .btn:focus-visible { outline: 2px solid var(--orange-primary); outline-offset: 2px; }
+
+  .btn-primary { background: var(--orange-primary); color: var(--white); border: 1px solid var(--orange-primary); padding: 10px 24px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .btn-primary:hover { background: var(--orange-hover); border-color: var(--orange-hover); }
+  .btn-primary:active { background: var(--orange-active); border-color: var(--orange-active); }
+
+  .btn-secondary { background: var(--navy-primary); color: var(--white); border: 1px solid var(--navy-primary); padding: 7px 16px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .btn-secondary:hover { background: var(--navy-hover); border-color: var(--navy-hover); }
+  .btn-secondary:active { background: var(--navy-active); border-color: var(--navy-active); }
+
+  .btn-outline { background: var(--white); color: var(--navy-primary); border: 1px solid var(--border); padding: 6px 14px; font-size: 14px; }
+  .btn-outline:hover { border-color: var(--orange-primary); color: var(--orange-primary); background: rgba(254,80,0,0.04); }
+  .btn-outline:disabled { opacity: 0.4; cursor: not-allowed; border-color: var(--border-soft); }
+
+  .btn-toggle { background: var(--navy-primary); color: var(--white); border: 1px solid var(--navy-primary); padding: 6px 14px; font-size: 14px; }
+  .btn-toggle:hover { background: var(--navy-hover); border-color: var(--navy-hover); }
+
+  .btn-ghost { background: none; color: var(--text-muted); border: 1px solid transparent; padding: 10px 16px; font-size: 14px; font-weight: 500; }
+  .btn-ghost:hover { color: var(--text-dark); }
+
+  .btn-pill-sm { background: var(--bg-tertiary); color: var(--text-dark); border: 1px solid var(--border-soft); padding: 5px 12px; font-size: 12px; border-radius: var(--r-6); font-weight: 700; }
+  .btn-pill-sm:hover { background: var(--bg-light); }
+  .btn-pill-sm.active { background: var(--navy-primary); color: var(--white); border-color: var(--navy-primary); }
+
+  .btn-link { background: none; color: var(--navy-primary); border: 0; padding: 0; font-size: 12px; font-weight: 700; cursor: pointer; transition: color 0.15s ease; }
+  .btn-link:hover { color: var(--orange-primary); }
+
+  /* === PAGE CHROME === */
   .page { min-height: 100vh; padding: var(--s-6) var(--s-8); display: flex; flex-direction: column; align-items: center; gap: var(--s-6); }
   .page-header { width: 1200px; font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: var(--s-3); }
   .crumb { color: var(--navy-primary); font-weight: 700; }
   .crumb-sep { color: var(--text-light); }
   .proto-tag { background: var(--highlight-bg); color: #7a5a00; font-weight: 700; padding: 2px 8px; border-radius: var(--r-4); font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; margin-left: auto; }
 
-  /* === Modal stage === */
+  /* === MODAL STAGE === */
   .modal-stage { width: 1200px; background: rgba(0,21,66,0.55); padding: var(--s-8) var(--s-10); border-radius: var(--r-8); display: flex; justify-content: center; }
   .modal { background: var(--white); width: 880px; border-radius: var(--r-12); box-shadow: var(--shadow-pop); overflow: hidden; display: grid; grid-template-columns: 1fr 280px; grid-template-rows: auto 1fr auto; grid-template-areas: "head head" "body summary" "foot foot"; }
   .modal-head { grid-area: head; padding: var(--s-4) var(--s-6); display: flex; align-items: center; border-bottom: 1px solid var(--border-soft); }
   .modal-head h4 { flex: 1; font-size: 18px; font-weight: 700; text-align: center; }
-  .modal-head .close { background: none; border: 0; font-size: 22px; line-height: 1; color: var(--text-muted); padding: 4px 8px; }
-  .modal-body { grid-area: body; padding: var(--s-5) var(--s-6); display: flex; flex-direction: column; gap: var(--s-4); overflow-y: auto; max-height: 720px; }
-  .modal-summary { grid-area: summary; padding: var(--s-6); background: var(--bg-tertiary); border-left: 1px solid var(--border-soft); display: flex; flex-direction: column; gap: var(--s-4); }
+  .modal-head .close { background: none; border: 0; font-size: 22px; line-height: 1; color: var(--text-muted); padding: 4px 8px; cursor: pointer; transition: color 0.15s ease; }
+  .modal-head .close:hover { color: var(--text-dark); }
+
+  /* Modal body: fixed height, stable scrollbar gutter, positioning context for picker overlay */
+  .modal-body { grid-area: body; padding: var(--s-5) var(--s-6); display: flex; flex-direction: column; gap: var(--s-4); overflow-y: auto; scrollbar-gutter: stable; height: 700px; position: relative; }
+  /* When picker is open, hide overflow so absolute picker doesn't trigger scroll */
+  .modal-body.picker-open { overflow: hidden; }
+
+  .modal-summary { grid-area: summary; padding: var(--s-6); background: var(--bg-tertiary); border-left: 1px solid var(--border-soft); display: flex; flex-direction: column; gap: var(--s-4); overflow-y: auto; max-height: 700px; }
   .modal-foot { grid-area: foot; padding: var(--s-4) var(--s-6); display: flex; justify-content: flex-end; gap: var(--s-3); border-top: 1px solid var(--border-soft); background: var(--bg-tertiary); }
 
-  /* === Context bar === */
-  .context-bar { display: flex; align-items: center; gap: var(--s-4); padding: var(--s-3) var(--s-4); background: #FAFAFA; border: 1px solid var(--border-soft); border-radius: var(--r-8); font-size: 13px; }
+  /* === CONTEXT BAR === */
+  .context-bar { display: flex; align-items: center; gap: var(--s-4); padding: var(--s-3) var(--s-4); background: #FAFAFA; border: 1px solid var(--border-soft); border-radius: var(--r-8); font-size: 13px; flex-shrink: 0; }
   .context-item { display: flex; flex-direction: column; gap: 2px; }
-  .context-item .lbl { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .context-item .lbl { font-size: var(--fs-sublabel); font-weight: var(--fw-sublabel); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
   .context-item .val { font-size: 14px; font-weight: 700; color: var(--text-dark); }
   .context-item .pms { font-size: 11px; color: var(--text-muted); font-weight: 400; margin-top: 2px; }
   .context-sep { width: 1px; align-self: stretch; background: var(--border-soft); }
-  .context-edit { margin-left: auto; font-size: 12px; color: var(--navy-primary); background: none; border: 0; font-weight: 700; padding: 0; text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; }
-  .context-edit:hover { text-decoration-color: var(--navy-primary); }
+  .context-edit { margin-left: auto; font-size: 12px; color: var(--navy-primary); background: none; border: 0; font-weight: 700; padding: 0; text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; cursor: pointer; transition: color 0.15s ease; }
+  .context-edit:hover { color: var(--orange-primary); text-decoration-color: var(--orange-primary); }
 
-  /* === Uploader === */
-  .uploader { border: 2px dashed var(--border); border-radius: var(--r-8); padding: var(--s-6) var(--s-4); text-align: center; color: var(--text-light); background: var(--white); font-size: 13px; cursor: pointer; transition: border-color 0.15s ease, background 0.15s ease; }
-  .uploader:hover { border-color: var(--orange-primary); background: rgba(254,80,0,0.02); }
-  .uploader .strong { color: var(--text-dark); font-weight: 700; }
+  /* === SECTION === */
+  .section { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; transition: opacity 0.2s ease; }
+  .section-title { font-size: var(--fs-section); font-weight: var(--fw-section); color: var(--fc-section); line-height: 1.3; }
+  .section-help { font-size: var(--fs-help); font-weight: var(--fw-help); color: var(--fc-help); line-height: 1.45; margin-bottom: var(--s-2); }
 
-  /* === Picker section === */
-  .picker-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-  .picker-help { font-size: 12px; color: var(--text-muted); margin-bottom: var(--s-3); }
+  /* Sections that get muted when picker is open */
+  .modal-body.picker-open .section.muted { opacity: 0.18; pointer-events: none; user-select: none; }
+
+  /* === IMPRINT COLORS SECTION === */
+  .picker-section { position: relative; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
 
   /* Warning banner */
-  .preferred-warning { display: flex; align-items: flex-start; gap: var(--s-2); padding: 10px 12px; background: var(--warning-bg); border: 1px solid var(--warning-border); border-radius: var(--r-6); margin-bottom: var(--s-3); font-size: 13px; color: var(--warning-text); }
+  .preferred-warning { display: flex; align-items: flex-start; gap: var(--s-2); padding: 8px 12px; background: var(--warning-bg); border: 1px solid var(--warning-border); border-radius: var(--r-6); margin-top: 4px; font-size: 13px; color: var(--warning-text); }
   .preferred-warning .icon { flex-shrink: 0; font-weight: 700; font-size: 14px; line-height: 1.2; }
   .preferred-warning b { color: #6f4500; }
 
   /* Chip zone */
-  .chip-zone { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-8); background: var(--white); min-height: 60px; align-items: center; }
-  .chip-zone.picker-attached { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: transparent; }
+  .chip-zone { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-8); background: var(--white); min-height: 60px; align-items: center; position: relative; z-index: 2; }
+  .chip-zone-empty { color: var(--text-light); font-size: 13px; font-style: italic; padding: 4px var(--s-2); }
 
-  .color-chip { display: inline-flex; align-items: center; gap: var(--s-2); padding: 5px 5px 5px 6px; background: var(--white); border: 1px solid var(--border-soft); border-radius: 999px; font-size: 14px; color: var(--text-dark); cursor: pointer; transition: border-color 0.15s ease, box-shadow 0.15s ease; }
+  .color-chip { display: inline-flex; align-items: center; gap: var(--s-2); padding: 5px 5px 5px 6px; background: var(--white); border: 1px solid var(--border-soft); border-radius: 999px; font-size: 14px; color: var(--text-dark); cursor: pointer; transition: all 0.15s ease; }
   .color-chip:hover { border-color: var(--navy-primary); box-shadow: 0 2px 6px rgba(0,21,66,0.08); }
-  .color-chip.open { border-color: var(--orange-primary); box-shadow: 0 0 0 3px rgba(254,80,0,0.15); }
+  .color-chip.open { border-color: var(--orange-primary); box-shadow: 0 0 0 3px var(--focus-ring); }
   .color-chip .sw { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.15); flex-shrink: 0; }
   .color-chip .label { font-weight: 500; }
   .color-chip .label b { font-weight: 700; }
   .color-chip .meta { color: var(--text-muted); font-size: 12px; font-weight: 400; }
   .color-chip .surcharge { color: var(--orange-dark); font-weight: 700; font-size: 12px; padding: 0 2px; }
-  .color-chip .remove { background: var(--bg-tertiary); border: 0; width: 22px; height: 22px; border-radius: 50%; color: var(--text-muted); font-size: 14px; line-height: 1; display: grid; place-items: center; margin-left: 2px; }
+  .color-chip .remove { background: var(--bg-tertiary); border: 0; width: 22px; height: 22px; border-radius: 50%; color: var(--text-muted); font-size: 14px; line-height: 1; display: grid; place-items: center; margin-left: 2px; cursor: pointer; transition: all 0.15s ease; }
   .color-chip .remove:hover { background: rgba(211,47,47,0.15); color: var(--error); }
 
-  .add-color-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1px dashed var(--border); border-radius: 999px; background: var(--white); color: var(--navy-primary); font-size: 14px; font-weight: 700; transition: all 0.15s ease; }
-  .add-color-btn:hover { border-style: solid; border-color: var(--orange-primary); color: var(--orange-primary); background: rgba(254,80,0,0.04); }
+  /* Add color uses the .btn-outline pattern */
+  .add-color-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--white); color: var(--navy-primary); font-size: 14px; font-weight: 700; transition: all 0.15s ease; cursor: pointer; }
+  .add-color-btn:hover { border-color: var(--orange-primary); color: var(--orange-primary); background: rgba(254,80,0,0.04); }
   .add-color-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .add-color-btn .plus { font-size: 16px; line-height: 1; }
-  .add-color-btn.is-active { background: var(--navy-primary); color: var(--white); border-color: var(--navy-primary); border-style: solid; }
-  .add-color-btn.is-active:hover { background: var(--navy-hover); color: var(--white); }
-
-  .chip-zone-empty { color: var(--text-light); font-size: 13px; font-style: italic; padding: 4px var(--s-2); }
+  .add-color-btn.is-active { background: var(--navy-primary); color: var(--white); border-color: var(--navy-primary); }
+  .add-color-btn.is-active:hover { background: var(--navy-hover); border-color: var(--navy-hover); color: var(--white); }
 
   /* Counter line */
-  .chip-counter { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-top: var(--s-2); }
+  .chip-counter { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-top: var(--s-2); flex-shrink: 0; }
   .chip-counter b { color: var(--text-dark); font-weight: 700; }
   .chip-counter .right { display: flex; align-items: center; gap: var(--s-2); }
   .chip-counter .pms-sum { color: var(--orange-dark); font-weight: 700; }
 
-  /* === Inline picker (replaces the popover) === */
-  .inline-picker { border: 1px solid var(--border-soft); border-top: 0; border-radius: 0 0 var(--r-8) var(--r-8); background: var(--white); display: flex; flex-direction: column; max-height: 520px; overflow: hidden; box-shadow: 0 6px 16px -8px rgba(0,21,66,0.08); }
+  /* === INLINE PICKER (absolutely positioned overlay when open) === */
+  .inline-picker {
+    position: absolute;
+    left: var(--s-6);
+    right: var(--s-6);
+    /* Top is set by JS to chip-zone bottom + 6px; bottom anchored to modal-body bottom */
+    top: 0; bottom: var(--s-5);
+    z-index: 5;
+    background: var(--white);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-8);
+    box-shadow: var(--shadow-pop);
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0; transform: translateY(-4px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    pointer-events: none;
+    display: flex;
+  }
+  .inline-picker.is-open {
+    opacity: 1; transform: translateY(0);
+    pointer-events: auto;
+  }
 
-  .picker-head-bar { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2) var(--s-3); background: #FAFAFA; border-bottom: 1px solid var(--border-soft); font-size: 13px; }
+  .picker-head-bar { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2) var(--s-3); background: #FAFAFA; border-bottom: 1px solid var(--border-soft); font-size: 13px; flex-shrink: 0; }
   .picker-mode-label { color: var(--text-dark); font-weight: 700; }
   .picker-mode-label .target { color: var(--navy-primary); }
   .picker-mode-label .target .sw-mini { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.15); vertical-align: -1px; margin-right: 4px; }
-  .picker-done { margin-left: auto; background: var(--navy-primary); color: var(--white); border: 0; padding: 6px 14px; border-radius: var(--r-6); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
-  .picker-done:hover { background: var(--navy-hover); }
+  .picker-head-bar .picker-done { margin-left: auto; }
 
   /* Tier tabs */
-  .tier-tabs { display: flex; padding: var(--s-2) var(--s-3) 0; gap: 2px; background: var(--white); border-bottom: 1px solid var(--border-soft); }
-  .tier-tabs button { background: none; border: 0; padding: 9px var(--s-4); font-size: 14px; font-weight: 700; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s ease, border-color 0.15s ease; }
+  .tier-tabs { display: flex; padding: var(--s-2) var(--s-3) 0; gap: 2px; background: var(--white); border-bottom: 1px solid var(--border-soft); flex-shrink: 0; }
+  .tier-tabs button { background: none; border: 0; padding: 7px var(--s-3); font-size: 13px; font-weight: 700; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; transition: color 0.15s ease, border-color 0.15s ease; }
   .tier-tabs button.active { color: var(--navy-primary); border-bottom-color: var(--orange-primary); }
   .tier-tabs button:disabled { color: var(--text-light); cursor: not-allowed; }
   .tier-tabs button .badge { font-size: 10px; color: var(--orange-dark); margin-left: 4px; font-weight: 700; }
 
-  .picker-search-wrap { padding: var(--s-3); display: flex; flex-direction: column; gap: var(--s-2); background: var(--white); border-bottom: 1px solid var(--border-soft); }
-  .pop-search { width: 100%; padding: 9px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-6); font-size: 14px; }
-  .pop-search:focus { outline: none; border-color: var(--orange-primary); box-shadow: 0 0 0 3px rgba(254,80,0,0.15); }
+  .picker-search-wrap { padding: var(--s-2) var(--s-3); display: flex; flex-direction: column; gap: 6px; background: var(--white); border-bottom: 1px solid var(--border-soft); flex-shrink: 0; }
+  .pop-search { width: 100%; padding: 7px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-6); font-size: 14px; transition: all 0.15s ease; }
+  .pop-search:focus { outline: none; border-color: var(--orange-primary); box-shadow: 0 0 0 3px var(--focus-ring); }
 
-  .picker-body { flex: 1; overflow-y: auto; padding: var(--s-3) var(--s-3) var(--s-4); }
-  .picker-foot { padding: var(--s-2) var(--s-3); border-top: 1px solid var(--border-soft); font-size: 12px; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between; background: #FAFAFA; gap: var(--s-3); }
+  .picker-body { flex: 1; overflow-y: auto; padding: var(--s-3); min-height: 0; }
+  .picker-foot { padding: 7px var(--s-3); border-top: 1px solid var(--border-soft); font-size: 12px; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between; background: #FAFAFA; gap: var(--s-3); flex-shrink: 0; }
 
-  /* Standard swatch grid */
-  .family { margin-bottom: var(--s-4); }
-  .family:last-child { margin-bottom: 0; }
-  .family h6 { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 var(--s-2) 2px; }
-  .swatch-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
-  .sw-btn { width: 100%; aspect-ratio: 1; border-radius: var(--r-6); border: 1px solid rgba(0,0,0,0.12); cursor: pointer; position: relative; transition: transform 0.1s ease, box-shadow 0.15s ease; }
-  .sw-btn:hover { transform: scale(1.08); box-shadow: 0 2px 6px rgba(0,0,0,0.15); z-index: 2; }
+  /* === STANDARD PICKER — label-left, swatches-right === */
+  .family { display: grid; grid-template-columns: 120px 1fr; align-items: center; gap: var(--s-3); padding: 2px 0; }
+  .family h6 { font-size: var(--fs-sublabel); font-weight: var(--fw-sublabel); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; text-align: right; margin: 0; line-height: 1.2; }
+  .swatch-row { display: flex; flex-wrap: wrap; gap: 5px; }
+  .sw-btn { width: 26px; height: 26px; border-radius: var(--r-6); border: 1px solid rgba(0,0,0,0.12); cursor: pointer; position: relative; transition: transform 0.1s ease, box-shadow 0.15s ease; flex-shrink: 0; padding: 0; background-clip: padding-box; }
+  .sw-btn:hover { transform: scale(1.12); box-shadow: 0 2px 6px rgba(0,0,0,0.15); z-index: 2; }
   .sw-btn.selected { box-shadow: 0 0 0 2px var(--orange-primary), 0 2px 6px rgba(0,0,0,0.15); }
   .sw-btn .tip { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--text-dark); color: white; padding: 4px 8px; border-radius: var(--r-4); font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s ease; z-index: 3; }
   .sw-btn:hover .tip { opacity: 1; }
   .sw-btn .tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 4px solid transparent; border-top-color: var(--text-dark); }
 
-  /* PMS rows */
-  .pms-disclaimer { background: var(--highlight-bg); border: 1px solid #E8D9A1; color: #7a5a00; font-size: 12px; padding: 8px 10px; border-radius: var(--r-6); }
+  /* === PMS PICKER === */
+  .pms-disclaimer { background: var(--highlight-bg); border: 1px solid #E8D9A1; color: #7a5a00; font-size: 12px; padding: 6px 10px; border-radius: var(--r-6); }
   .pms-disclaimer b { font-weight: 700; }
   .pms-filters { display: flex; gap: 6px; flex-wrap: wrap; }
-  .pms-chip { font-size: 11px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border-soft); background: var(--white); color: var(--text-muted); cursor: pointer; font-weight: 700; }
-  .pms-chip.active { background: var(--navy-primary); color: var(--white); border-color: var(--navy-primary); }
   .pms-list { display: flex; flex-direction: column; gap: 2px; }
   .pms-row { display: grid; grid-template-columns: 28px 110px 1fr 64px; gap: 10px; align-items: center; padding: 6px 8px; border-radius: var(--r-6); background: none; border: 0; text-align: left; cursor: pointer; transition: background 0.1s; }
   .pms-row:hover { background: var(--bg-tertiary); }
@@ -176,19 +250,21 @@
   .pms-row .hex { font-family: 'Courier New', monospace; font-size: 11px; color: var(--text-light); text-align: right; }
 
   .no-match { text-align: center; padding: var(--s-6) var(--s-4); color: var(--text-muted); font-size: 13px; }
-  .no-match .switch-link { display: inline-block; margin-top: var(--s-2); color: var(--navy-primary); font-weight: 700; background: none; border: 0; }
-  .pop-foot-link { background: none; border: 0; color: var(--navy-primary); font-weight: 700; padding: 0; font-size: 12px; }
+  .no-match .switch-link { display: inline-block; margin-top: var(--s-2); color: var(--navy-primary); font-weight: 700; background: none; border: 0; cursor: pointer; }
 
-  /* === Artwork instructions === */
-  .instr-label { display: block; font-size: 12px; font-weight: 700; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
-  .instr-help { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
-  textarea.instr { width: 100%; min-height: 72px; padding: 10px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-6); font-size: 14px; resize: vertical; }
-  textarea.instr:focus { outline: none; border-color: var(--orange-primary); box-shadow: 0 0 0 3px rgba(254,80,0,0.15); }
+  /* === UPLOADER === */
+  .uploader { border: 2px dashed var(--border); border-radius: var(--r-8); padding: var(--s-5) var(--s-4); text-align: center; color: var(--text-light); background: var(--white); font-size: 13px; cursor: pointer; transition: all 0.15s ease; }
+  .uploader:hover { border-color: var(--orange-primary); background: rgba(254,80,0,0.02); }
+  .uploader .strong { color: var(--text-dark); font-weight: 700; margin-bottom: 2px; }
 
-  /* === Price summary === */
-  .modal-summary h5 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-dark); }
+  /* === ARTWORK INSTRUCTIONS === */
+  textarea.instr { width: 100%; min-height: 64px; padding: 8px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-6); font-size: 14px; resize: vertical; transition: all 0.15s ease; }
+  textarea.instr:focus { outline: none; border-color: var(--orange-primary); box-shadow: 0 0 0 3px var(--focus-ring); }
+
+  /* === PRICE SUMMARY === */
+  .summary-title { font-size: var(--fs-sublabel); font-weight: var(--fw-sublabel); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
   .price-block { background: var(--white); border-radius: var(--r-8); padding: var(--s-4); border: 1px solid var(--border-soft); }
-  .price-total { font-size: 22px; font-weight: 700; color: var(--text-dark); margin-top: 4px; }
+  .price-total { font-size: 22px; font-weight: 700; color: var(--text-dark); margin-top: 4px; font-variant-numeric: tabular-nums; }
   .price-total-label { font-size: 12px; color: var(--text-muted); }
   .price-each { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
   .price-delta { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--orange-dark); font-weight: 700; margin-top: 4px; }
@@ -197,33 +273,25 @@
   .breakdown .amt { color: var(--text-dark); font-variant-numeric: tabular-nums; }
   .breakdown .pms-line { color: var(--orange-dark); font-weight: 700; }
 
-  /* === Buttons === */
-  .btn-primary { background: var(--orange-primary); color: var(--white); border: 0; padding: 10px 24px; border-radius: var(--r-6); font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .btn-primary:hover { background: var(--orange-hover); }
-  .btn-ghost { background: none; color: var(--text-muted); border: 0; padding: 10px 16px; font-weight: 500; font-size: 14px; }
-  .btn-ghost:hover { color: var(--text-dark); }
-
-  /* === Toast === */
+  /* === TOAST === */
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--navy-primary); color: var(--white); padding: 10px 18px; border-radius: var(--r-6); font-size: 13px; box-shadow: 0 6px 16px rgba(0,0,0,0.2); z-index: 200; opacity: 0; transition: opacity 0.2s ease, transform 0.2s ease; pointer-events: none; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
   .toast.warn { background: var(--orange-dark); }
 
-  /* Just-added chip flash */
+  /* === Just-added chip flash === */
   @keyframes chip-pop { 0% { transform: scale(0.7); opacity: 0; } 60% { transform: scale(1.06); opacity: 1; } 100% { transform: scale(1); } }
   .color-chip.just-added { animation: chip-pop 0.28s ease; }
 
-  /* === Demo controls === */
+  /* === DEMO CONTROLS === */
   .demo-controls { width: 1200px; background: var(--white); border-radius: var(--r-8); padding: var(--s-4); border: 1px solid var(--border-soft); }
-  .demo-controls h5 { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: var(--s-3); }
+  .demo-controls h5 { font-size: var(--fs-sublabel); font-weight: var(--fw-sublabel); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: var(--s-3); }
   .demo-controls .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .demo-controls .row + .row { margin-top: var(--s-2); }
-  .demo-controls .row-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-right: 4px; }
-  .demo-btn { font-size: 12px; padding: 6px 12px; border-radius: var(--r-6); background: var(--bg-tertiary); border: 1px solid var(--border-soft); color: var(--text-dark); cursor: pointer; }
-  .demo-btn:hover { background: var(--bg-light); }
+  .demo-controls .row-label { font-size: var(--fs-sublabel); font-weight: var(--fw-sublabel); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-right: 4px; }
   .demo-select { font-size: 12px; padding: 5px 8px; border-radius: var(--r-6); border: 1px solid var(--border-soft); background: var(--white); }
 
   .annotation-key { width: 1200px; padding: var(--s-4); background: var(--white); border-radius: var(--r-8); border: 1px solid var(--border-soft); font-size: 13px; color: var(--text-body); }
-  .annotation-key h5 { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: var(--s-3); }
+  .annotation-key h5 { font-size: var(--fs-sublabel); font-weight: var(--fw-sublabel); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: var(--s-3); }
   .annotation-key ul { margin: 0; padding-left: var(--s-5); }
   .annotation-key li { margin-bottom: 4px; }
   .annotation-key code { background: var(--bg-tertiary); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
@@ -240,10 +308,9 @@
     <span>Customize Your Product</span>
     <span class="crumb-sep">›</span>
     <span>Sending us artwork</span>
-    <span class="proto-tag">Prototype · Picker v3</span>
+    <span class="proto-tag">Prototype · Picker v4</span>
   </header>
 
-  <!-- Demo controls -->
   <div class="demo-controls">
     <h5>Demo controls — try these states</h5>
 
@@ -270,12 +337,12 @@
 
     <div class="row">
       <span class="row-label">Quick states:</span>
-      <button class="demo-btn" data-demo="empty">Empty</button>
-      <button class="demo-btn" data-demo="below-preferred">1 of 3 preferred</button>
-      <button class="demo-btn" data-demo="at-preferred">3 of 3 preferred</button>
-      <button class="demo-btn" data-demo="over-preferred">4 of 3 preferred (warning)</button>
-      <button class="demo-btn" data-demo="mixed">Mixed: 1 standard + 2 PMS</button>
-      <button class="demo-btn" data-demo="reset">Reset</button>
+      <button class="btn-pill-sm" data-demo="empty">Empty</button>
+      <button class="btn-pill-sm" data-demo="below-preferred">1 of 3 preferred</button>
+      <button class="btn-pill-sm" data-demo="at-preferred">3 of 3 preferred</button>
+      <button class="btn-pill-sm" data-demo="over-preferred">4 of 3 preferred (warning)</button>
+      <button class="btn-pill-sm" data-demo="mixed">Mixed: 1 standard + 2 PMS</button>
+      <button class="btn-pill-sm" data-demo="reset">Reset</button>
     </div>
   </div>
 
@@ -288,9 +355,9 @@
         <button class="close" aria-label="Close">×</button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body" id="modalBody">
 
-        <!-- Context bar — read-only summary from upstream -->
+        <!-- Context bar -->
         <div class="context-bar">
           <div class="context-item">
             <span class="lbl">Method</span>
@@ -306,72 +373,69 @@
           <button class="context-edit" type="button" onclick="showToast('In production this links back to the configurator step.', false)">Edit upstream →</button>
         </div>
 
-        <!-- Artwork uploader -->
-        <div class="uploader">
-          <div class="strong">Click or drag to upload your artwork</div>
-          <div>AI · EPS · PSD · PDF · SVG · PNG · JPG · TIFF — max 10 MB</div>
-        </div>
-
-        <!-- THE PICKER -->
-        <section class="picker-section">
-          <h3>Imprint colors</h3>
-          <div class="picker-help">Click <b>+ Add color</b> to start picking. The picker stays open while you add — close it when you're done. Click a chip to change it, × to remove.</div>
+        <!-- 1. IMPRINT COLORS (moved to top) -->
+        <section class="picker-section" id="pickerSection">
+          <div class="section-title">Imprint colors</div>
+          <div class="section-help">Click <b>+ Add color</b> to start picking. The picker stays open while you add — close it when you're done. Click a chip to change it, × to remove.</div>
 
           <div id="preferredWarning" class="preferred-warning" hidden>
             <span class="icon">⚠</span>
             <span id="preferredWarningText"></span>
           </div>
 
-          <!-- Chip zone -->
           <div id="chipZone" class="chip-zone"></div>
 
-          <!-- Inline picker — expands BELOW the chip zone, structurally part of the same component -->
-          <div id="inlinePicker" class="inline-picker" hidden>
-            <!-- Mode bar -->
-            <div class="picker-head-bar">
-              <span class="picker-mode-label" id="pickerModeLabel">Add color</span>
-              <button class="picker-done" id="pickerDone">Done picking</button>
-            </div>
-            <!-- Tier tabs -->
-            <div class="tier-tabs">
-              <button data-tier="standard" id="tabStandard">Standard</button>
-              <button data-tier="pms" id="tabPms">PMS <span class="badge">+$20</span></button>
-            </div>
-            <!-- Search + filters -->
-            <div class="picker-search-wrap">
-              <div id="pmsDisclaimer" class="pms-disclaimer" hidden><b>Screen colors are approximate.</b> We match to physical Pantone Coated swatches — confirm with a Pantone book or your designer for exact match.</div>
-              <input type="text" class="pop-search" id="popSearch" placeholder="Search colors" autocomplete="off">
-              <div id="pmsFilters" class="pms-filters" hidden>
-                <button class="pms-chip active" data-pms-filter="all">All</button>
-                <button class="pms-chip" data-pms-filter="C">Coated</button>
-                <button class="pms-chip" data-pms-filter="U">Uncoated</button>
-                <button class="pms-chip" data-pms-filter="neon">Neon</button>
-                <button class="pms-chip" data-pms-filter="metallic">Metallic</button>
-              </div>
-            </div>
-            <!-- Body -->
-            <div class="picker-body" id="popBody"></div>
-            <!-- Foot -->
-            <div class="picker-foot" id="popFoot"></div>
-          </div>
-
-          <!-- Counter -->
           <div class="chip-counter">
             <div><b id="chipCount">0</b> of <b id="chipMax">4</b> colors used · Preferred <b id="chipPreferred">3</b></div>
             <div class="right" id="chipSummary"></div>
           </div>
         </section>
 
-        <!-- Artwork instructions -->
-        <div>
-          <label class="instr-label" for="instrTxt">Artwork instructions</label>
-          <div class="instr-help">Placement, sizing, orientation — anything the artwork team should know about layout. (Color goes in the picker above.)</div>
+        <!-- 2. ARTWORK FILE (now has a section title) -->
+        <section class="section muted-target" data-muted>
+          <div class="section-title">Artwork file</div>
+          <div class="section-help">Upload your logo or artwork now, or send it after the order — both work. Vector files (AI, EPS, SVG, PDF) are best.</div>
+          <div class="uploader">
+            <div class="strong">Click or drag to upload your artwork</div>
+            <div>AI · EPS · PSD · PDF · SVG · PNG · JPG · TIFF — max 10 MB</div>
+          </div>
+        </section>
+
+        <!-- 3. ARTWORK INSTRUCTIONS -->
+        <section class="section muted-target" data-muted>
+          <div class="section-title">Artwork instructions</div>
+          <div class="section-help">Placement, sizing, orientation — anything the artwork team should know about layout. (Color goes in the picker above.)</div>
           <textarea id="instrTxt" class="instr" placeholder="e.g. logo centered on left chest, 3.5 inches wide"></textarea>
+        </section>
+
+        <!-- The picker overlay — absolute-positioned within modal-body when open -->
+        <div id="inlinePicker" class="inline-picker">
+          <div class="picker-head-bar">
+            <span class="picker-mode-label" id="pickerModeLabel">Add color</span>
+            <button class="btn btn-secondary picker-done" id="pickerDone">Done picking</button>
+          </div>
+          <div class="tier-tabs">
+            <button data-tier="standard" id="tabStandard">Standard</button>
+            <button data-tier="pms" id="tabPms">PMS <span class="badge">+$20</span></button>
+          </div>
+          <div class="picker-search-wrap">
+            <div id="pmsDisclaimer" class="pms-disclaimer" hidden><b>Screen colors are approximate.</b> We match to physical Pantone Coated swatches — confirm with a Pantone book or your designer.</div>
+            <input type="text" class="pop-search" id="popSearch" placeholder="Search colors" autocomplete="off">
+            <div id="pmsFilters" class="pms-filters" hidden>
+              <button class="btn-pill-sm active" data-pms-filter="all">All</button>
+              <button class="btn-pill-sm" data-pms-filter="C">Coated</button>
+              <button class="btn-pill-sm" data-pms-filter="U">Uncoated</button>
+              <button class="btn-pill-sm" data-pms-filter="neon">Neon</button>
+              <button class="btn-pill-sm" data-pms-filter="metallic">Metallic</button>
+            </div>
+          </div>
+          <div class="picker-body" id="popBody"></div>
+          <div class="picker-foot" id="popFoot"></div>
         </div>
       </div>
 
       <aside class="modal-summary">
-        <h5>Order summary</h5>
+        <div class="summary-title">Order summary</div>
         <div class="price-block">
           <div class="price-total-label">Subtotal with Setup Fee</div>
           <div class="price-total">$<span id="priceTotal">958.64</span></div>
@@ -387,26 +451,27 @@
       </aside>
 
       <div class="modal-foot">
-        <button class="btn-ghost">Close</button>
-        <button class="btn-primary">Done</button>
+        <button class="btn btn-ghost">Close</button>
+        <button class="btn btn-primary">Done</button>
       </div>
     </div>
   </div>
 
   <div class="annotation-key">
-    <h5>v3 changes — Pattern A (inline picker)</h5>
+    <h5>v4 changes</h5>
     <ul>
-      <li><b>No popover.</b> The picker now expands inline below the chip zone, as part of the same component. No popup-on-popup. Single surface end-to-end.</li>
-      <li><b>Stays open across multiple picks.</b> Click <code>+ Add color</code> once to open; click swatches/PMS rows to append chips. Each new chip flashes in. Close with the <b>Done picking</b> button, the <code>Esc</code> key, or by focusing the artwork-instructions textarea.</li>
-      <li><b>Edit mode.</b> Click an existing chip to edit it — the picker opens with that chip's tier pre-selected and the current color highlighted; picking replaces it. After a replace the picker switches back to add mode automatically (so the next click appends, not replaces).</li>
-      <li><b>Eye-travel reduced</b> — picker is anchored exactly where you clicked Add (or the chip you're editing); no popover positioning gymnastics.</li>
-      <li><b>Wider grid.</b> Inline picker is the full width of the modal body (~480 px), so the swatch grid runs 10 columns instead of 8.</li>
-      <li><b>Add-color button doubles as picker toggle.</b> When the picker is open it shows a filled "navy" state; clicking it again closes the picker. Mirrors the Notion/Linear tag-picker pattern.</li>
+      <li><b>Sections reordered</b> — Imprint colors → Artwork file → Artwork instructions. Colors first since they're the structured-data input the artwork team most depends on; file upload is optional and can come after the order.</li>
+      <li><b>Artwork file got a section title</b> (was the only section without one).</li>
+      <li><b>Typography system</b> defined as CSS custom properties + helper classes. Three section titles ("Imprint colors", "Artwork file", "Artwork instructions") all share the same style: 14 px / 700 / normal-case / <code>text-dark</code>. Sub-labels (context labels, summary card, demo rows) all share 11 px / 700 / uppercase / <code>text-muted</code>. Help text consistent at 12 px / 400 / <code>text-muted</code>.</li>
+      <li><b>Button system</b> — <code>.btn-primary</code> (orange, modal commit), <code>.btn-secondary</code> (navy, picker done), <code>.btn-outline</code> (add color closed), <code>.btn-toggle</code> (add color when picker open, navy filled), <code>.btn-ghost</code> (close, foot links), <code>.btn-pill-sm</code> (PMS filters, demo buttons). All use the same <code>0.15 s ease</code> transition; hover patterns are consistent within each variant.</li>
+      <li><b>Standard palette layout</b> — label-left, swatches-right grid. Each family is one row (or wraps if needed). Recently-used row removed. Vertical height down from ~360 px to ~220 px.</li>
+      <li><b>Picker is now an overlay</b> within the modal body — when open it absolute-positions over the artwork sections instead of pushing them down. Modal height stays fixed at 640 px. Sections behind the picker fade to 18% opacity for focus.</li>
+      <li><b>Auto-scroll on open</b> — chip-zone scrolls to the top of the modal viewport when the picker opens, so chips stay visible above the picker.</li>
+      <li><b>Stable scrollbar gutter</b> (<code>scrollbar-gutter: stable</code>) — modal-body reserves space for the scrollbar always, so content doesn't shift horizontally when the scrollbar appears.</li>
     </ul>
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast" class="toast"></div>
 
 <script>
@@ -422,136 +487,110 @@ const METHODS = {
 
 const STANDARD_PALETTE = {
   'Neutrals': [
-    { name: 'White',        hex: '#FFFFFF' },
-    { name: 'Cream',        hex: '#F5EFE0' },
-    { name: 'Light Gray',   hex: '#C9CCCE' },
-    { name: 'Gray',         hex: '#8A8D8F' },
-    { name: 'Charcoal',     hex: '#3D3D3F' },
-    { name: 'Black',        hex: '#1A1A1A' },
-    { name: 'Tan',          hex: '#C9A881' },
-    { name: 'Brown',        hex: '#7B4B27' },
-    { name: 'Dark Brown',   hex: '#43271A' },
+    { name: 'White', hex: '#FFFFFF' }, { name: 'Cream', hex: '#F5EFE0' }, { name: 'Light Gray', hex: '#C9CCCE' },
+    { name: 'Gray', hex: '#8A8D8F' }, { name: 'Charcoal', hex: '#3D3D3F' }, { name: 'Black', hex: '#1A1A1A' },
+    { name: 'Tan', hex: '#C9A881' }, { name: 'Brown', hex: '#7B4B27' }, { name: 'Dark Brown', hex: '#43271A' },
   ],
   'Reds & Pinks': [
-    { name: 'Light Pink',   hex: '#F4B6C8' },
-    { name: 'Hot Pink',     hex: '#E5346E' },
-    { name: 'Magenta',      hex: '#B5176B' },
-    { name: 'Red',          hex: '#C8102E' },
-    { name: 'Bright Red',   hex: '#E2231A' },
-    { name: 'Dark Red',     hex: '#8B0E1F' },
-    { name: 'Burgundy',     hex: '#5B1A2A' },
+    { name: 'Light Pink', hex: '#F4B6C8' }, { name: 'Hot Pink', hex: '#E5346E' }, { name: 'Magenta', hex: '#B5176B' },
+    { name: 'Red', hex: '#C8102E' }, { name: 'Bright Red', hex: '#E2231A' }, { name: 'Dark Red', hex: '#8B0E1F' },
+    { name: 'Burgundy', hex: '#5B1A2A' },
   ],
   'Oranges & Yellows': [
-    { name: 'Coral',        hex: '#F88379' },
-    { name: 'Orange',       hex: '#F26522' },
-    { name: 'Dark Orange',  hex: '#C24A1A' },
-    { name: 'Lemon Yellow', hex: '#F4E04D' },
-    { name: 'Yellow',       hex: '#F8C300' },
-    { name: 'Gold',         hex: '#C5A028' },
-    { name: 'Dark Gold',    hex: '#8F7218' },
+    { name: 'Coral', hex: '#F88379' }, { name: 'Orange', hex: '#F26522' }, { name: 'Dark Orange', hex: '#C24A1A' },
+    { name: 'Lemon Yellow', hex: '#F4E04D' }, { name: 'Yellow', hex: '#F8C300' }, { name: 'Gold', hex: '#C5A028' },
+    { name: 'Dark Gold', hex: '#8F7218' },
   ],
   'Greens': [
-    { name: 'Lime Green',   hex: '#A4D65E' },
-    { name: 'Bright Green', hex: '#3CB44B' },
-    { name: 'Kelly Green',  hex: '#1F9A50' },
-    { name: 'Forest Green', hex: '#0F5132' },
-    { name: 'Olive Green',  hex: '#6B7B3F' },
-    { name: 'Army Green',   hex: '#4B5320' },
+    { name: 'Lime Green', hex: '#A4D65E' }, { name: 'Bright Green', hex: '#3CB44B' }, { name: 'Kelly Green', hex: '#1F9A50' },
+    { name: 'Forest Green', hex: '#0F5132' }, { name: 'Olive Green', hex: '#6B7B3F' }, { name: 'Army Green', hex: '#4B5320' },
   ],
   'Blues': [
-    { name: 'Sky Blue',     hex: '#7CB9E8' },
-    { name: 'Light Blue',   hex: '#3A8DDE' },
-    { name: 'Royal Blue',   hex: '#0F4C9A' },
-    { name: 'Navy Blue',    hex: '#0A2240' },
-    { name: 'Turquoise',    hex: '#30B5B5' },
-    { name: 'Teal',         hex: '#0B7A75' },
+    { name: 'Sky Blue', hex: '#7CB9E8' }, { name: 'Light Blue', hex: '#3A8DDE' }, { name: 'Royal Blue', hex: '#0F4C9A' },
+    { name: 'Navy Blue', hex: '#0A2240' }, { name: 'Turquoise', hex: '#30B5B5' }, { name: 'Teal', hex: '#0B7A75' },
   ],
   'Purples': [
-    { name: 'Lavender',     hex: '#B9A6D6' },
-    { name: 'Purple',       hex: '#6E2C8F' },
-    { name: 'Deep Purple',  hex: '#3F1965' },
+    { name: 'Lavender', hex: '#B9A6D6' }, { name: 'Purple', hex: '#6E2C8F' }, { name: 'Deep Purple', hex: '#3F1965' },
   ],
   'Metallics': [
-    { name: 'Metallic Silver', hex: '#C0C0C0' },
-    { name: 'Metallic Gold',   hex: '#D4AF37' },
-    { name: 'Metallic Copper', hex: '#B87333' },
+    { name: 'Metallic Silver', hex: '#C0C0C0' }, { name: 'Metallic Gold', hex: '#D4AF37' }, { name: 'Metallic Copper', hex: '#B87333' },
   ],
 };
 
 const PMS_PALETTE = [
-  { code: '286 C',  name: 'Reflex Blue family', hex: '#0033A0', kind: 'C' },
-  { code: '287 C',  name: 'Royal Blue',         hex: '#003087', kind: 'C' },
-  { code: '288 C',  name: 'Dark Royal',         hex: '#002663', kind: 'C' },
-  { code: '289 C',  name: 'Navy',               hex: '#0C2340', kind: 'C' },
-  { code: '300 C',  name: 'Bright Blue',        hex: '#005EB8', kind: 'C' },
-  { code: '301 C',  name: 'Deep Blue',          hex: '#004B87', kind: 'C' },
-  { code: '302 C',  name: 'Teal Blue',          hex: '#003B5C', kind: 'C' },
-  { code: '2728 C', name: 'Sky Blue',           hex: '#0047BB', kind: 'C' },
-  { code: '2935 C', name: 'Process Blue family',hex: '#0057B8', kind: 'C' },
-  { code: '3005 C', name: 'Bright Cyan',        hex: '#0077C8', kind: 'C' },
-  { code: '7686 C', name: 'Steel Blue',         hex: '#1D4F91', kind: 'C' },
+  { code: '286 C', name: 'Reflex Blue family', hex: '#0033A0', kind: 'C' },
+  { code: '287 C', name: 'Royal Blue', hex: '#003087', kind: 'C' },
+  { code: '288 C', name: 'Dark Royal', hex: '#002663', kind: 'C' },
+  { code: '289 C', name: 'Navy', hex: '#0C2340', kind: 'C' },
+  { code: '300 C', name: 'Bright Blue', hex: '#005EB8', kind: 'C' },
+  { code: '301 C', name: 'Deep Blue', hex: '#004B87', kind: 'C' },
+  { code: '302 C', name: 'Teal Blue', hex: '#003B5C', kind: 'C' },
+  { code: '2728 C', name: 'Sky Blue', hex: '#0047BB', kind: 'C' },
+  { code: '2935 C', name: 'Process Blue family', hex: '#0057B8', kind: 'C' },
+  { code: '3005 C', name: 'Bright Cyan', hex: '#0077C8', kind: 'C' },
+  { code: '7686 C', name: 'Steel Blue', hex: '#1D4F91', kind: 'C' },
   { code: 'Reflex Blue C', name: 'Reflex Blue', hex: '#002395', kind: 'C' },
-  { code: 'Process Blue C',name: 'Process Blue',hex: '#0085CA', kind: 'C' },
-  { code: '185 C',  name: 'Bright Red',         hex: '#E4002B', kind: 'C' },
-  { code: '186 C',  name: 'Classic Red',        hex: '#C8102E', kind: 'C' },
-  { code: '187 C',  name: 'Dark Red',           hex: '#A6192E', kind: 'C' },
-  { code: '199 C',  name: 'Rose Red',           hex: '#D50032', kind: 'C' },
-  { code: '200 C',  name: 'Crimson',            hex: '#BA0C2F', kind: 'C' },
-  { code: '201 C',  name: 'Deep Crimson',       hex: '#9D2235', kind: 'C' },
-  { code: '202 C',  name: 'Burgundy',           hex: '#862633', kind: 'C' },
-  { code: '1797 C', name: 'Cherry Red',         hex: '#CB333B', kind: 'C' },
-  { code: '1807 C', name: 'Brick Red',          hex: '#A4243B', kind: 'C' },
-  { code: '484 C',  name: 'Dark Brick',         hex: '#9A3324', kind: 'C' },
-  { code: 'Red 032 C', name: 'Pantone Red',     hex: '#EF3340', kind: 'C' },
+  { code: 'Process Blue C', name: 'Process Blue', hex: '#0085CA', kind: 'C' },
+  { code: '185 C', name: 'Bright Red', hex: '#E4002B', kind: 'C' },
+  { code: '186 C', name: 'Classic Red', hex: '#C8102E', kind: 'C' },
+  { code: '187 C', name: 'Dark Red', hex: '#A6192E', kind: 'C' },
+  { code: '199 C', name: 'Rose Red', hex: '#D50032', kind: 'C' },
+  { code: '200 C', name: 'Crimson', hex: '#BA0C2F', kind: 'C' },
+  { code: '201 C', name: 'Deep Crimson', hex: '#9D2235', kind: 'C' },
+  { code: '202 C', name: 'Burgundy', hex: '#862633', kind: 'C' },
+  { code: '1797 C', name: 'Cherry Red', hex: '#CB333B', kind: 'C' },
+  { code: '1807 C', name: 'Brick Red', hex: '#A4243B', kind: 'C' },
+  { code: '484 C', name: 'Dark Brick', hex: '#9A3324', kind: 'C' },
+  { code: 'Red 032 C', name: 'Pantone Red', hex: '#EF3340', kind: 'C' },
   { code: 'Rhodamine Red C', name: 'Rhodamine', hex: '#E10098', kind: 'C' },
-  { code: 'Warm Red C', name: 'Warm Red',       hex: '#F9423A', kind: 'C' },
-  { code: '158 C',  name: 'Bright Orange',      hex: '#E87722', kind: 'C' },
-  { code: '165 C',  name: 'Orange',             hex: '#FF671F', kind: 'C' },
-  { code: '166 C',  name: 'Vivid Orange',       hex: '#E35205', kind: 'C' },
-  { code: '1505 C', name: 'Tangerine',          hex: '#FF8200', kind: 'C' },
-  { code: '1665 C', name: 'Pumpkin',            hex: '#D86018', kind: 'C' },
-  { code: '7417 C', name: 'Coral',              hex: '#E04E39', kind: 'C' },
-  { code: 'Orange 021 C', name: 'Pantone Orange',hex:'#FE5000', kind: 'C' },
-  { code: '109 C',  name: 'Sun Yellow',         hex: '#FFD100', kind: 'C' },
-  { code: '116 C',  name: 'Bright Yellow',      hex: '#FFCD00', kind: 'C' },
-  { code: '1225 C', name: 'Golden Yellow',      hex: '#FFC845', kind: 'C' },
-  { code: '7405 C', name: 'Mustard',            hex: '#F1B300', kind: 'C' },
-  { code: '7548 C', name: 'Amber',              hex: '#FFC600', kind: 'C' },
-  { code: 'Yellow C', name: 'Pantone Yellow',   hex: '#FEDD00', kind: 'C' },
-  { code: '348 C',  name: 'Forest Green',       hex: '#00843D', kind: 'C' },
-  { code: '349 C',  name: 'Dark Forest',        hex: '#046A38', kind: 'C' },
-  { code: '354 C',  name: 'Kelly Green',        hex: '#00B140', kind: 'C' },
-  { code: '355 C',  name: 'Bright Green',       hex: '#009639', kind: 'C' },
-  { code: '356 C',  name: 'Pine Green',         hex: '#007A33', kind: 'C' },
-  { code: '363 C',  name: 'Spring Green',       hex: '#3F9C35', kind: 'C' },
-  { code: '364 C',  name: 'Olive',              hex: '#4A7729', kind: 'C' },
-  { code: '7740 C', name: 'Garden Green',       hex: '#43B02A', kind: 'C' },
-  { code: '376 C',  name: 'Lime Green',         hex: '#84BD00', kind: 'C' },
-  { code: '266 C',  name: 'Royal Purple',       hex: '#5F249F', kind: 'C' },
-  { code: '267 C',  name: 'Deep Purple',        hex: '#4C12A1', kind: 'C' },
-  { code: '268 C',  name: 'Dark Purple',        hex: '#582C83', kind: 'C' },
-  { code: '2685 C', name: 'Royal Violet',       hex: '#330072', kind: 'C' },
-  { code: '7669 C', name: 'Plum',               hex: '#5D4B8C', kind: 'C' },
-  { code: 'Purple C', name: 'Pantone Purple',   hex: '#BB29BB', kind: 'C' },
-  { code: 'Black 6 C', name: 'Rich Black',      hex: '#101820', kind: 'C' },
-  { code: 'Cool Gray 6 C', name: 'Cool Gray',   hex: '#A7A8AA', kind: 'C' },
-  { code: 'Cool Gray 9 C', name: 'Mid Gray',    hex: '#75787B', kind: 'C' },
-  { code: 'Cool Gray 11 C',name: 'Dark Gray',   hex: '#53565A', kind: 'C' },
-  { code: '425 C',  name: 'Slate Gray',         hex: '#54585A', kind: 'C' },
-  { code: '426 C',  name: 'Charcoal',           hex: '#1F2A44', kind: 'C' },
-  { code: '877 C',  name: 'Metallic Silver',    hex: '#8A8D8F', kind: 'metallic' },
-  { code: '873 C',  name: 'Metallic Gold',      hex: '#866D4B', kind: 'metallic' },
-  { code: '8003 C', name: 'Metallic Copper',    hex: '#825C3A', kind: 'metallic' },
-  { code: '8401 C', name: 'Metallic Bronze',    hex: '#6E5A3C', kind: 'metallic' },
-  { code: '286 U',  name: 'Reflex Blue (U)',    hex: '#1A3578', kind: 'U' },
-  { code: '185 U',  name: 'Bright Red (U)',     hex: '#D52B1E', kind: 'U' },
-  { code: '354 U',  name: 'Kelly Green (U)',    hex: '#319B42', kind: 'U' },
-  { code: '116 U',  name: 'Bright Yellow (U)',  hex: '#F3C300', kind: 'U' },
-  { code: '802 C',  name: 'Neon Green',         hex: '#44D62C', kind: 'neon' },
-  { code: '805 C',  name: 'Neon Pink',          hex: '#F95375', kind: 'neon' },
-  { code: '806 C',  name: 'Neon Magenta',       hex: '#EA3592', kind: 'neon' },
-  { code: '811 C',  name: 'Neon Orange',        hex: '#FF6A14', kind: 'neon' },
-  { code: '813 C',  name: 'Neon Pink Bright',   hex: '#D81E5B', kind: 'neon' },
+  { code: 'Warm Red C', name: 'Warm Red', hex: '#F9423A', kind: 'C' },
+  { code: '158 C', name: 'Bright Orange', hex: '#E87722', kind: 'C' },
+  { code: '165 C', name: 'Orange', hex: '#FF671F', kind: 'C' },
+  { code: '166 C', name: 'Vivid Orange', hex: '#E35205', kind: 'C' },
+  { code: '1505 C', name: 'Tangerine', hex: '#FF8200', kind: 'C' },
+  { code: '1665 C', name: 'Pumpkin', hex: '#D86018', kind: 'C' },
+  { code: '7417 C', name: 'Coral', hex: '#E04E39', kind: 'C' },
+  { code: 'Orange 021 C', name: 'Pantone Orange', hex: '#FE5000', kind: 'C' },
+  { code: '109 C', name: 'Sun Yellow', hex: '#FFD100', kind: 'C' },
+  { code: '116 C', name: 'Bright Yellow', hex: '#FFCD00', kind: 'C' },
+  { code: '1225 C', name: 'Golden Yellow', hex: '#FFC845', kind: 'C' },
+  { code: '7405 C', name: 'Mustard', hex: '#F1B300', kind: 'C' },
+  { code: '7548 C', name: 'Amber', hex: '#FFC600', kind: 'C' },
+  { code: 'Yellow C', name: 'Pantone Yellow', hex: '#FEDD00', kind: 'C' },
+  { code: '348 C', name: 'Forest Green', hex: '#00843D', kind: 'C' },
+  { code: '349 C', name: 'Dark Forest', hex: '#046A38', kind: 'C' },
+  { code: '354 C', name: 'Kelly Green', hex: '#00B140', kind: 'C' },
+  { code: '355 C', name: 'Bright Green', hex: '#009639', kind: 'C' },
+  { code: '356 C', name: 'Pine Green', hex: '#007A33', kind: 'C' },
+  { code: '363 C', name: 'Spring Green', hex: '#3F9C35', kind: 'C' },
+  { code: '364 C', name: 'Olive', hex: '#4A7729', kind: 'C' },
+  { code: '7740 C', name: 'Garden Green', hex: '#43B02A', kind: 'C' },
+  { code: '376 C', name: 'Lime Green', hex: '#84BD00', kind: 'C' },
+  { code: '266 C', name: 'Royal Purple', hex: '#5F249F', kind: 'C' },
+  { code: '267 C', name: 'Deep Purple', hex: '#4C12A1', kind: 'C' },
+  { code: '268 C', name: 'Dark Purple', hex: '#582C83', kind: 'C' },
+  { code: '2685 C', name: 'Royal Violet', hex: '#330072', kind: 'C' },
+  { code: '7669 C', name: 'Plum', hex: '#5D4B8C', kind: 'C' },
+  { code: 'Purple C', name: 'Pantone Purple', hex: '#BB29BB', kind: 'C' },
+  { code: 'Black 6 C', name: 'Rich Black', hex: '#101820', kind: 'C' },
+  { code: 'Cool Gray 6 C', name: 'Cool Gray', hex: '#A7A8AA', kind: 'C' },
+  { code: 'Cool Gray 9 C', name: 'Mid Gray', hex: '#75787B', kind: 'C' },
+  { code: 'Cool Gray 11 C', name: 'Dark Gray', hex: '#53565A', kind: 'C' },
+  { code: '425 C', name: 'Slate Gray', hex: '#54585A', kind: 'C' },
+  { code: '426 C', name: 'Charcoal', hex: '#1F2A44', kind: 'C' },
+  { code: '877 C', name: 'Metallic Silver', hex: '#8A8D8F', kind: 'metallic' },
+  { code: '873 C', name: 'Metallic Gold', hex: '#866D4B', kind: 'metallic' },
+  { code: '8003 C', name: 'Metallic Copper', hex: '#825C3A', kind: 'metallic' },
+  { code: '8401 C', name: 'Metallic Bronze', hex: '#6E5A3C', kind: 'metallic' },
+  { code: '286 U', name: 'Reflex Blue (U)', hex: '#1A3578', kind: 'U' },
+  { code: '185 U', name: 'Bright Red (U)', hex: '#D52B1E', kind: 'U' },
+  { code: '354 U', name: 'Kelly Green (U)', hex: '#319B42', kind: 'U' },
+  { code: '116 U', name: 'Bright Yellow (U)', hex: '#F3C300', kind: 'U' },
+  { code: '802 C', name: 'Neon Green', hex: '#44D62C', kind: 'neon' },
+  { code: '805 C', name: 'Neon Pink', hex: '#F95375', kind: 'neon' },
+  { code: '806 C', name: 'Neon Magenta', hex: '#EA3592', kind: 'neon' },
+  { code: '811 C', name: 'Neon Orange', hex: '#FF6A14', kind: 'neon' },
+  { code: '813 C', name: 'Neon Pink Bright', hex: '#D81E5B', kind: 'neon' },
 ];
 
 /* ===================== State ===================== */
@@ -560,13 +599,12 @@ const state = {
   method: 'transfer',
   preferred: 3,
   chips: [],
-  recentlyUsed: [],
   pickerOpen: false,
-  pickerMode: 'add',      // 'add' | 'edit'
+  pickerMode: 'add',
   editingChipId: null,
   popoverTier: 'standard',
   pmsFilter: 'all',
-  justAddedChipId: null,  // for flash animation
+  justAddedChipId: null,
 };
 
 let nextChipId = 1;
@@ -595,6 +633,14 @@ function render() {
   renderInlinePicker();
   renderPreferredWarning();
   renderPrice();
+  applyMutedState();
+}
+
+function applyMutedState() {
+  $('#modalBody').classList.toggle('picker-open', state.pickerOpen);
+  document.querySelectorAll('[data-muted]').forEach(el => {
+    el.classList.toggle('muted', state.pickerOpen);
+  });
 }
 
 function renderContext() {
@@ -611,7 +657,6 @@ function renderChips() {
   const m = METHODS[state.method];
   const zone = $('#chipZone');
   zone.innerHTML = '';
-  zone.classList.toggle('picker-attached', state.pickerOpen);
 
   if (state.chips.length === 0) {
     const empty = document.createElement('span');
@@ -629,12 +674,9 @@ function renderChips() {
     if (state.justAddedChipId === chip.id) el.classList.add('just-added');
 
     const sw = document.createElement('span');
-    sw.className = 'sw';
-    sw.style.background = chip.color.hex;
-    el.appendChild(sw);
+    sw.className = 'sw'; sw.style.background = chip.color.hex; el.appendChild(sw);
 
-    const lbl = document.createElement('span');
-    lbl.className = 'label';
+    const lbl = document.createElement('span'); lbl.className = 'label';
     if (chip.tier === 'pms') {
       lbl.innerHTML = `<b>${escapeHtml(chip.color.code)}</b> <span class="meta">${escapeHtml(chip.color.name)}</span>`;
     } else {
@@ -643,17 +685,11 @@ function renderChips() {
     el.appendChild(lbl);
 
     if (chip.tier === 'pms') {
-      const s = document.createElement('span');
-      s.className = 'surcharge';
-      s.textContent = '+$20';
-      el.appendChild(s);
+      const s = document.createElement('span'); s.className = 'surcharge'; s.textContent = '+$20'; el.appendChild(s);
     }
 
     const rm = document.createElement('button');
-    rm.type = 'button';
-    rm.className = 'remove';
-    rm.setAttribute('aria-label', 'Remove color');
-    rm.textContent = '×';
+    rm.type = 'button'; rm.className = 'remove'; rm.setAttribute('aria-label', 'Remove color'); rm.textContent = '×';
     rm.addEventListener('click', (e) => { e.stopPropagation(); removeChip(chip.id); });
     el.appendChild(rm);
 
@@ -661,7 +697,6 @@ function renderChips() {
     zone.appendChild(el);
   });
 
-  // Add button — also toggles picker
   const addBtn = document.createElement('button');
   addBtn.type = 'button';
   addBtn.className = 'add-color-btn';
@@ -676,7 +711,6 @@ function renderChips() {
   });
   zone.appendChild(addBtn);
 
-  // Counter
   $('#chipCount').textContent = state.chips.length;
   $('#chipMax').textContent = m.maxColors;
   $('#chipPreferred').textContent = state.preferred;
@@ -695,7 +729,6 @@ function renderChips() {
     }
   }
 
-  // Clear just-added marker after the animation
   if (state.justAddedChipId !== null) {
     setTimeout(() => { state.justAddedChipId = null; }, 350);
   }
@@ -712,17 +745,12 @@ function renderPreferredWarning() {
     const pmsExtra = state.chips.slice(state.preferred).filter(c => c.tier === 'pms').length * 20;
     const total = newSetup + newRun + pmsExtra;
     let txt = `You preferred <b>${state.preferred}</b> color${state.preferred === 1 ? '' : 's'}. `;
-    if (extra === 1) {
-      txt += `Adding a <b>${n}${ordinalSuffix(n)} color</b> raises your price by <b>$${total.toFixed(2)}</b>`;
-    } else {
-      txt += `Adding <b>${extra} more</b> colors raises your price by <b>$${total.toFixed(2)}</b>`;
-    }
+    if (extra === 1) txt += `Adding a <b>${n}${ordinalSuffix(n)} color</b> raises your price by <b>$${total.toFixed(2)}</b>`;
+    else txt += `Adding <b>${extra} more</b> colors raises your price by <b>$${total.toFixed(2)}</b>`;
     txt += ` (setup + run-charge${pmsExtra > 0 ? ' + PMS' : ''}). That's fine — just so you know.`;
     $('#preferredWarningText').innerHTML = txt;
     w.hidden = false;
-  } else {
-    w.hidden = true;
-  }
+  } else { w.hidden = true; }
 }
 
 function renderPrice() {
@@ -756,12 +784,8 @@ function renderPrice() {
   if (extra > 0 && m.extraPerColor > 0) rows.push([`Additional color run (${extra} × $${m.extraPerColor.toFixed(2)} × 144)`, '$' + extraRun.toFixed(2)]);
   if (pmsCount > 0) rows.push([`Pantone match (${pmsCount} × $20)`, '+$' + pmsTotal.toFixed(2), 'pms-line']);
   rows.forEach(([l, a, cls]) => {
-    const ld = document.createElement('div');
-    ld.className = 'label' + (cls ? ' ' + cls : '');
-    ld.textContent = l;
-    const ad = document.createElement('div');
-    ad.className = 'amt' + (cls ? ' ' + cls : '');
-    ad.textContent = a;
+    const ld = document.createElement('div'); ld.className = 'label' + (cls ? ' ' + cls : ''); ld.textContent = l;
+    const ad = document.createElement('div'); ad.className = 'amt' + (cls ? ' ' + cls : ''); ad.textContent = a;
     bd.appendChild(ld); bd.appendChild(ad);
   });
 }
@@ -788,11 +812,11 @@ function computeBaseline() {
   return BASE_ITEM_PRICE + firstSetup + extraSetup + extraRun;
 }
 
-/* ===================== Inline picker ===================== */
+/* ===================== Inline picker (absolute overlay) ===================== */
 
 function renderInlinePicker() {
   const pickerEl = $('#inlinePicker');
-  pickerEl.hidden = !state.pickerOpen;
+  pickerEl.classList.toggle('is-open', state.pickerOpen);
   if (!state.pickerOpen) return;
 
   const m = METHODS[state.method];
@@ -804,9 +828,7 @@ function renderInlinePicker() {
     if (chip) {
       const display = chip.tier === 'pms' ? chip.color.code : chip.color.name;
       label.innerHTML = `<span style="color: var(--text-muted); font-weight: 500;">Replacing</span> <span class="target"><span class="sw-mini" style="background:${chip.color.hex}"></span>${escapeHtml(display)}</span>`;
-    } else {
-      label.textContent = 'Add color';
-    }
+    } else { label.textContent = 'Add color'; }
   } else {
     const used = state.chips.length;
     label.innerHTML = used === 0
@@ -823,7 +845,7 @@ function renderInlinePicker() {
   $('#pmsDisclaimer').hidden = state.popoverTier !== 'pms';
   $('#pmsFilters').hidden = state.popoverTier !== 'pms';
 
-  // Search
+  // Search placeholder
   $('#popSearch').placeholder = state.popoverTier === 'pms'
     ? 'Search PMS code or name (e.g., 286 C, Reflex Blue)'
     : 'Search colors (e.g., red, navy, gold)';
@@ -838,17 +860,14 @@ function renderInlinePicker() {
       : `Pantone match adds <b>$20</b> per color`;
     foot.appendChild(left);
     const sw = document.createElement('button');
-    sw.className = 'pop-foot-link';
-    sw.textContent = 'Use a standard color →';
+    sw.className = 'btn-link'; sw.textContent = 'Use a standard color →';
     sw.addEventListener('click', () => { state.popoverTier = 'standard'; renderInlinePicker(); });
     foot.appendChild(sw);
   } else {
-    const left = document.createElement('span');
-    left.textContent = 'Standard color — no extra setup fee';
+    const left = document.createElement('span'); left.textContent = 'Standard color — no extra setup fee';
     foot.appendChild(left);
     const sw = document.createElement('button');
-    sw.className = 'pop-foot-link';
-    sw.innerHTML = 'Need exact brand match? Try PMS →';
+    sw.className = 'btn-link'; sw.innerHTML = 'Need exact brand match? Try PMS →';
     sw.addEventListener('click', () => {
       if (m.pms === 'false') { showToast(`PMS not available for ${m.label}`, true); return; }
       state.popoverTier = 'pms';
@@ -857,7 +876,6 @@ function renderInlinePicker() {
     foot.appendChild(sw);
   }
 
-  // Body
   if (state.popoverTier === 'standard') renderStandardBody($('#popSearch').value);
   else renderPmsBody($('#popSearch').value);
 }
@@ -867,15 +885,6 @@ function renderStandardBody(query) {
   body.innerHTML = '';
   const q = (query || '').trim().toLowerCase();
 
-  if (!q && state.recentlyUsed.length > 0) {
-    const fam = document.createElement('div');
-    fam.className = 'family';
-    fam.innerHTML = '<h6>Recently used</h6>';
-    const grid = document.createElement('div'); grid.className = 'swatch-grid';
-    state.recentlyUsed.slice(0, 10).forEach(c => grid.appendChild(makeSwatchBtn(c)));
-    fam.appendChild(grid); body.appendChild(fam);
-  }
-
   let any = false;
   Object.entries(STANDARD_PALETTE).forEach(([famName, colors]) => {
     const filtered = colors.filter(c => !q || c.name.toLowerCase().includes(q));
@@ -883,9 +892,9 @@ function renderStandardBody(query) {
     any = true;
     const fam = document.createElement('div'); fam.className = 'family';
     fam.innerHTML = `<h6>${famName}</h6>`;
-    const grid = document.createElement('div'); grid.className = 'swatch-grid';
-    filtered.forEach(c => grid.appendChild(makeSwatchBtn(c)));
-    fam.appendChild(grid); body.appendChild(fam);
+    const row = document.createElement('div'); row.className = 'swatch-row';
+    filtered.forEach(c => row.appendChild(makeSwatchBtn(c)));
+    fam.appendChild(row); body.appendChild(fam);
   });
 
   if (!any) {
@@ -896,8 +905,7 @@ function renderStandardBody(query) {
 
 function makeSwatchBtn(color) {
   const b = document.createElement('button');
-  b.type = 'button';
-  b.className = 'sw-btn';
+  b.type = 'button'; b.className = 'sw-btn';
   b.style.background = color.hex;
   b.setAttribute('aria-label', color.name);
   const tip = document.createElement('span'); tip.className = 'tip'; tip.textContent = color.name; b.appendChild(tip);
@@ -934,8 +942,7 @@ function renderPmsBody(query) {
   const list = document.createElement('div'); list.className = 'pms-list';
   results.forEach(p => {
     const row = document.createElement('button');
-    row.type = 'button';
-    row.className = 'pms-row';
+    row.type = 'button'; row.className = 'pms-row';
     if (state.pickerMode === 'edit' && state.editingChipId !== null) {
       const chip = state.chips.find(c => c.id === state.editingChipId);
       if (chip && chip.tier === 'pms' && chip.color.code === p.code) row.classList.add('selected');
@@ -947,20 +954,36 @@ function renderPmsBody(query) {
   body.appendChild(list);
 }
 
+/* ===================== Picker positioning ===================== */
+
+function positionPicker() {
+  const picker = $('#inlinePicker');
+  const modalBody = $('#modalBody');
+  const chipZone = $('#chipZone');
+  if (!chipZone) return;
+
+  // Top of picker = chip-zone bottom relative to modal-body
+  const mbRect = modalBody.getBoundingClientRect();
+  const czRect = chipZone.getBoundingClientRect();
+  // Account for modal-body scroll
+  const topOffset = (czRect.bottom - mbRect.top) + modalBody.scrollTop + 8;
+  picker.style.top = topOffset + 'px';
+}
+
 /* ===================== Open/close picker ===================== */
 
 function openPickerForAdd() {
   const m = METHODS[state.method];
-  if (state.chips.length >= m.maxColors) {
-    showToast(`Maximum ${m.maxColors} colors for ${m.label}`, true);
-    return;
-  }
+  if (state.chips.length >= m.maxColors) { showToast(`Maximum ${m.maxColors} colors for ${m.label}`, true); return; }
   state.pickerOpen = true;
   state.pickerMode = 'add';
   state.editingChipId = null;
   state.popoverTier = 'standard';
   $('#popSearch').value = '';
   render();
+  // Scroll chip-zone to top of modal body so picker fills the rest
+  scrollChipsIntoView();
+  positionPicker();
   setTimeout(() => $('#popSearch').focus(), 30);
 }
 
@@ -973,6 +996,8 @@ function openPickerForEdit(chipId) {
   state.popoverTier = chip.tier;
   $('#popSearch').value = '';
   render();
+  scrollChipsIntoView();
+  positionPicker();
   setTimeout(() => $('#popSearch').focus(), 30);
 }
 
@@ -983,66 +1008,60 @@ function closePicker() {
   render();
 }
 
+function scrollChipsIntoView() {
+  const modalBody = $('#modalBody');
+  const pickerSection = $('#pickerSection');
+  // Smooth-scroll so the picker section starts at the top of the modal body
+  const target = pickerSection.offsetTop - 8;
+  modalBody.scrollTo({ top: target, behavior: 'smooth' });
+}
+
 /* ===================== Commits ===================== */
 
 function commitStandardColor(color) {
   if (state.pickerMode === 'edit' && state.editingChipId !== null) {
     const chip = state.chips.find(c => c.id === state.editingChipId);
     if (chip) { chip.tier = 'standard'; chip.color = { ...color }; }
-    // After edit-replace, switch back to add mode (picker stays open)
-    state.pickerMode = 'add';
-    state.editingChipId = null;
+    state.pickerMode = 'add'; state.editingChipId = null;
   } else {
     const m = METHODS[state.method];
-    if (state.chips.length >= m.maxColors) {
-      showToast(`Maximum ${m.maxColors} colors reached`, true);
-      return;
-    }
+    if (state.chips.length >= m.maxColors) { showToast(`Maximum ${m.maxColors} colors reached`, true); return; }
     const newChip = { id: nextChipId++, tier: 'standard', color: { ...color } };
     state.chips.push(newChip);
     state.justAddedChipId = newChip.id;
-    // If we hit max, auto-close
-    if (state.chips.length >= m.maxColors) {
-      state.pickerOpen = false;
-      state.pickerMode = 'add';
-    }
+    if (state.chips.length >= m.maxColors) { state.pickerOpen = false; state.pickerMode = 'add'; }
   }
-  state.recentlyUsed = [color, ...state.recentlyUsed.filter(c => c.hex !== color.hex)].slice(0, 10);
   $('#popSearch').value = '';
   render();
+  if (state.pickerOpen) positionPicker();
 }
 
 function commitPmsColor(p) {
   if (state.pickerMode === 'edit' && state.editingChipId !== null) {
     const chip = state.chips.find(c => c.id === state.editingChipId);
     if (chip) { chip.tier = 'pms'; chip.color = { ...p }; }
-    state.pickerMode = 'add';
-    state.editingChipId = null;
+    state.pickerMode = 'add'; state.editingChipId = null;
   } else {
     const m = METHODS[state.method];
-    if (state.chips.length >= m.maxColors) {
-      showToast(`Maximum ${m.maxColors} colors reached`, true);
-      return;
-    }
+    if (state.chips.length >= m.maxColors) { showToast(`Maximum ${m.maxColors} colors reached`, true); return; }
     const newChip = { id: nextChipId++, tier: 'pms', color: { ...p } };
     state.chips.push(newChip);
     state.justAddedChipId = newChip.id;
-    if (state.chips.length >= m.maxColors) {
-      state.pickerOpen = false;
-      state.pickerMode = 'add';
-    }
+    if (state.chips.length >= m.maxColors) { state.pickerOpen = false; state.pickerMode = 'add'; }
   }
   $('#popSearch').value = '';
   render();
+  if (state.pickerOpen) positionPicker();
 }
 
 function removeChip(id) {
   state.chips = state.chips.filter(c => c.id !== id);
   if (state.editingChipId === id) { state.editingChipId = null; state.pickerMode = 'add'; }
   render();
+  if (state.pickerOpen) positionPicker();
 }
 
-/* ===================== Method/preferred handlers ===================== */
+/* ===================== Method / preferred handlers ===================== */
 
 function setMethod(methodKey) {
   const newMethod = METHODS[methodKey];
@@ -1060,12 +1079,7 @@ function setMethod(methodKey) {
   if (state.preferred > newMethod.maxColors) state.preferred = newMethod.maxColors;
   render();
 }
-
-function setPreferred(n) {
-  const m = METHODS[state.method];
-  state.preferred = Math.min(n, m.maxColors);
-  render();
-}
+function setPreferred(n) { state.preferred = Math.min(n, METHODS[state.method].maxColors); render(); }
 
 /* ===================== Wire-up ===================== */
 
@@ -1095,17 +1109,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   $('#pickerDone').addEventListener('click', closePicker);
-
-  // Esc closes picker (not modal)
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && state.pickerOpen) { closePicker(); e.stopPropagation(); }});
-
-  // Focusing the artwork-instructions textarea is the natural "I'm done picking" signal
   $('#instrTxt').addEventListener('focus', () => { if (state.pickerOpen) closePicker(); });
 
-  // Demo buttons
   document.querySelectorAll('[data-demo]').forEach(btn => {
     btn.addEventListener('click', () => runDemo(btn.dataset.demo));
   });
+
+  // Reposition picker if window resizes
+  window.addEventListener('resize', () => { if (state.pickerOpen) positionPicker(); });
 
   render();
 });
@@ -1121,7 +1133,7 @@ function runDemo(name) {
     pms185: { code: '185 C', name: 'Bright Red', hex: '#E4002B' },
   };
   switch(name) {
-    case 'empty':         state.chips = []; break;
+    case 'empty': state.chips = []; break;
     case 'below-preferred':
       state.preferred = 3;
       state.chips = [{ id: nextChipId++, tier: 'standard', color: sample.black }];
@@ -1153,10 +1165,7 @@ function runDemo(name) {
       ];
       break;
     case 'reset':
-      state.method = 'transfer';
-      state.preferred = 3;
-      state.chips = [];
-      state.recentlyUsed = [];
+      state.method = 'transfer'; state.preferred = 3; state.chips = [];
       break;
   }
   render();
